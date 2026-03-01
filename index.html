@@ -3,675 +3,1208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>晓波智能资讯站 - AI科技金融前沿</title>
-    <meta name="description" content="每日更新AI科技、股票投资、金融资讯">
-    <meta name="keywords" content="AI,人工智能,科技,股票,投资,金融">
+    <title>晓波智能资讯站 | AI 科技金融前沿</title>
+    <meta name="description" content="每日更新 AI 科技、股票投资、金融资讯">
+    <meta name="keywords" content="AI，人工智能，科技，股票，投资，金融">
+    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6726601289992127" crossorigin="anonymous"></script>
     <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --accent: #f093fb;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; text-align: center; border-radius: 0 0 20px 20px; margin-bottom: 30px; }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        header p { opacity: 0.9; }
-        .stats { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
-        .stats span { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
-        .categories { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .category-section { margin-bottom: 15px; }
-        .category-section h3 { color: #667eea; margin-bottom: 10px; font-size: 1.1rem; }
-        .sub-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { background: #f0f0f0; padding: 5px 12px; border-radius: 15px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
-        .tag:hover { background: #667eea; color: white; }
-        .articles { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-content { padding: 15px; }
-        .card .category { background: #667eea; color: white; padding: 3px 10px; border-radius: 10px; font-size: 0.75rem; display: inline-block; margin-bottom: 8px; }
-        .time-badge { margin-left: 8px; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; }
-        .time-badge.hot { background: #ff4757; color: white; }
-        .time-badge.new { background: #2ed573; color: white; }
-        .card h3 { font-size: 1.1rem; margin-bottom: 8px; line-height: 1.4; }
-        .card .summary { color: #666; font-size: 0.9rem; margin-bottom: 10px; }
-        .card .meta { color: #999; font-size: 0.8rem; }
-        .search-box { margin-bottom: 20px; }
-        .search-box input { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .refresh-btn { display: inline-block; background: white; color: #667eea; padding: 8px 20px; border-radius: 20px; margin-top: 10px; font-size: 0.9rem; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .site-subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Category Filter - 简化版 */
+        .category-filter {
+            background: var(--card-bg);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .category-filter h2 {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-right: 10px;
+            font-weight: 500;
+        }
+        
+        .cat-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+        
+        .cat-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .cat-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Ad Banner */
+        .ad-banner {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 100px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        /* Articles Grid */
+        .articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .card-img {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f0f0f0;
+        }
+        
+        .card-body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .cat-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .badge {
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+        }
+        
+        .badge.hot {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        
+        .badge.new {
+            background: #c6f6d5;
+            color: #276749;
+        }
+        
+        .time {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            margin-left: auto;
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            color: var(--text);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-summary {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        
+        .author {
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .site-title { font-size: 1.4rem; }
+            .articles { grid-template-columns: 1fr; }
+            .category-filter { justify-content: center; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>🤖 晓波智能资讯站</h1>
-            <p>AI科技 | 金融投资 | 前沿趋势</p>
-            <div class="stats">
-                <span>📰 100 篇</span>
-                <span>⏰ 实时更新</span>
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">🤖</div>
+            <div>
+                <h1 class="site-title">晓波智能资讯站</h1>
+                <p class="site-subtitle">AI 科技 | 金融投资 | 前沿趋势</p>
             </div>
+        </div>
+        <div class="stats">
+            <span class="stat-item">📰 100 篇</span>
+            <span class="stat-item">⏰ 实时更新</span>
+            <span class="stat-item">🤖 AI 驱动</span>
         </div>
     </header>
     
     <div class="container">
-        <!-- 广告位 -->
-        <div style="text-align:center;margin:20px 0;min-height:100px;background:#f9f9f9;display:flex;align-items:center;justify-content:center;">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6726601289992127" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <!-- 广告位 1 -->
+        <div class="ad-banner">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-6726601289992127"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
         
-        <div class="search-box">
-            <input type="text" placeholder="搜索文章..." onkeyup="searchArticles(this.value)">
+        <!-- 分类筛选 -->
+        <div class="category-filter">
+            <h2>筛选：</h2>
+            <button class="cat-btn active" onclick="filterCategory('all')">全部</button><button class="cat-btn" onclick="filterCategory('科技产业')">科技产业</button><button class="cat-btn" onclick="filterCategory('AI前沿')">AI前沿</button><button class="cat-btn" onclick="filterCategory('AI科技')">AI科技</button><button class="cat-btn" onclick="filterCategory('优质RSS源')">优质RSS源</button><button class="cat-btn" onclick="filterCategory('金融科技')">金融科技</button><button class="cat-btn" onclick="filterCategory('智能金融速递')">智能金融速递</button><button class="cat-btn" onclick="filterCategory('今日要闻')">今日要闻</button>
         </div>
         
-        <div class="categories">
-            <h2 style="margin-bottom:15px;">📂 文章分类</h2>
+        <!-- 文章列表 -->
+        <div class="articles">
             
-        <div class="category-section">
-            <h3>科技产业 (708)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('其他')">其他(302)</span><span class="tag" onclick="filterBySubCategory('创业')">创业(55)</span><span class="tag" onclick="filterBySubCategory('产品发布')">产品发布(43)</span><span class="tag" onclick="filterBySubCategory('科技产业')">科技产业(37)</span><span class="tag" onclick="filterBySubCategory('AI应用')">AI应用(22)</span><span class="tag" onclick="filterBySubCategory('具身智能')">具身智能(22)</span><span class="tag" onclick="filterBySubCategory('教育')">教育(16)</span><span class="tag" onclick="filterBySubCategory('消费')">消费(10)</span><span class="tag" onclick="filterBySubCategory('AI大模型')">AI大模型(9)</span><span class="tag" onclick="filterBySubCategory('游戏')">游戏(9)</span><span class="tag" onclick="filterBySubCategory('国际')">国际(8)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(8)</span><span class="tag" onclick="filterBySubCategory('股市')">股市(6)</span><span class="tag" onclick="filterBySubCategory('公司财报')">公司财报(3)</span><span class="tag" onclick="filterBySubCategory('政策')">政策(3)</span><span class="tag" onclick="filterBySubCategory('商业战略')">商业战略(1)</span></div>
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/the-piracy-problem-streaming-platforms-cant-solve/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a22d897c6ac831ef25ac5a/master/pass/Streaming_WiredME_Web-Lead2.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge hot">🔥</span>
+                    <span class="time">14小时前</span>
+                </div>
+                <h3 class="card-title">The Piracy Problem Streaming Platforms Can’t Solve</h3>
+                <p class="card-summary">In parts of the Middle East and North Africa, a patchwork of sanctions, paymen...</p>
+                <div class="card-footer">
+                    <span class="author">Tharwa Boulifi</span>
+                    <span class="date">03/01 10:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhqx7l/iphone_17_pro_max_becomes_most_tradedin/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/-nnQJg7cLrldTSjowgsquR2YrQVTCpBFLEjKD5VEmpU.jpeg?width=640&crop=smart&auto=webp&s=ea7a73fef756d687a3f24e9219deb9638a34d0be)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge hot">🔥</span>
+                    <span class="time">17小时前</span>
+                </div>
+                <h3 class="card-title">iPhone 17 Pro Max becomes most traded-in smartph...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhqx7l...</p>
+                <div class="card-footer">
+                    <span class="author">/u/ControlCAD</span>
+                    <span class="date">03/01 07:20</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhoi54/claude_hits_no_1_on_app_store_as_chatgpt_users/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/I5960qBIGzzGKf_i2tnm__u1XwujikRqyoAAx8YGKgQ.jpeg?width=640&crop=smart&auto=webp&s=21379434ed81b46e0fe0724acff890da50350df4)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge hot">🔥</span>
+                    <span class="time">19小时前</span>
+                </div>
+                <h3 class="card-title">Claude hits No. 1 on App Store as ChatGPT users ...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhoi54...</p>
+                <div class="card-footer">
+                    <span class="author">/u/Ephoenix6</span>
+                    <span class="date">03/01 05:04</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhlk6v/lawmakers_demand_dhs_define_domestic_terrorist_as/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/JxFUMUT_5imUV4Av83T0ZEz2TiTRaZNxH-3IT6hChAQ.jpeg?width=640&crop=smart&auto=webp&s=0cdf6de5a1c0241d57e4ed54a9d84acdb1d5bc60)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge hot">🔥</span>
+                    <span class="time">22小时前</span>
+                </div>
+                <h3 class="card-title">Lawmakers Demand DHS Define ‘Domestic Terrorist’...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhlk6v...</p>
+                <div class="card-footer">
+                    <span class="author">/u/ControlCAD</span>
+                    <span class="date">03/01 02:36</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://www.ifanr.com/1656274?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
+            <div class="card-img" style="background-image: url(https://s3.ifanr.com/images/ep/cover-images/bian_he_su_da_shui_bian_jiao_tan_de_nv_hai_cover.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">早报｜小米Vision GT概念超跑亮相/曝新款Apple Watch支持指纹识别/手机之后，汽...</h3>
+                <p class="card-summary">· 周意保展示 Find N6 真机：折痕控制「久用平整」
+· 英伟达或将推出新推理芯片
+· 蔚来李斌获中国人工智能最高奖<p>#欢迎关注爱范儿官方微信公众...</p>
+                <div class="card-footer">
+                    <span class="author">Shawn Rain</span>
+                    <span class="date">03/01 00:35</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://techcrunch.com/2026/02/28/the-trap-anthropic-built-for-itself/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">The trap Anthropic built for itself</h3>
+                <p class="card-summary">Anthropic, OpenAI, Google DeepMind and others have long promised to govern the...</p>
+                <div class="card-footer">
+                    <span class="author">Connie Loizos</span>
+                    <span class="date">03/01 00:08</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhheu0/warning_facebook_ads_for_free_windows_11_upgrade/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/kwHzETbeVGNDiV85KTXKLFs_ihw6BdNbh0gGnpjyfOk.jpeg?width=640&crop=smart&auto=webp&s=6d5148bc4c639bd64f665ec0593f10c237e43990)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Warning: Facebook Ads for Free Windows 11 Upgrad...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhheu0...</p>
+                <div class="card-footer">
+                    <span class="author">/u/gdelacalle</span>
+                    <span class="date">02/28 23:28</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhh8r0/wa_lawmakers_advancing_bill_restricting_employers/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/0r4GZ8-CDU7zsvFgI84Zy_ppOKuKnwkMEo6TQkuQwwQ.jpeg?width=640&crop=smart&auto=webp&s=57f22b1f15d09fc5eae37988c81abfc785fc8e9c)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">WA lawmakers advancing bill restricting employer...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhh8r0...</p>
+                <div class="card-footer">
+                    <span class="author">/u/esporx</span>
+                    <span class="date">02/28 23:20</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhgren/deepseek_to_release_longawaited_ai_model_in_new/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/XcefdhpQglt_ODrB6KDlbDrZM1Ae7ghETf8AtlehJb8.jpeg?width=640&crop=smart&auto=webp&s=55a41eeb3917f485564f77f7f0af08eb57b397c9)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">DeepSeek to release long-awaited AI model in new...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhgren...</p>
+                <div class="card-footer">
+                    <span class="author">/u/kharkovchanin</span>
+                    <span class="date">02/28 23:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/x-is-drowning-in-disinformation-following-us-and-israels-attack-on-iran/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a30993070d210785f7d04d/master/pass/Politics_WIRED_Iran_X.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">X Is Drowning in Disinformation Following US and...</h3>
+                <p class="card-summary">WIRED has reviewed hundreds of posts on X that promote misleading claims about...</p>
+                <div class="card-footer">
+                    <span class="author">David Gilbert</span>
+                    <span class="date">02/28 22:40</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/x-is-drowning-in-disinformation-following-us-and-israels-attack-on-iran/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a30993070d210785f7d04d/master/pass/Politics_WIRED_Iran_X.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">X Is Drowning in Disinformation Following US and...</h3>
+                <p class="card-summary">WIRED has reviewed hundreds of posts on X that promote misleading claims about...</p>
+                <div class="card-footer">
+                    <span class="author">David Gilbert</span>
+                    <span class="date">02/28 22:40</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://techcrunch.com/2026/02/28/why-did-netflix-back-down-from-its-deal-to-acquire-warner-bros/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Why did Netflix back down from its deal to acqui...</h3>
+                <p class="card-summary">Netflix's co-CEO reportedly told Trump, "I took your advice."</p>
+                <div class="card-footer">
+                    <span class="author">Anthony Ha</span>
+                    <span class="date">02/28 22:07</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://techcrunch.com/2026/02/28/warner-bros-netflix-paramount-acquisition-timeline-wbd/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">What to know about the landmark Warner Bros. Dis...</h3>
+                <p class="card-summary">Learn more about Paramount's planned acquisition of Warner Bros. Discovery — a...</p>
+                <div class="card-footer">
+                    <span class="author">Lauren Forristal</span>
+                    <span class="date">02/28 21:28</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://techcrunch.com/2026/02/28/anthropics-claude-rises-to-no-2-in-the-app-store-following-pentagon-dispute/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Anthropic’s Claude rises to No. 2 in the App Sto...</h3>
+                <p class="card-summary">Anthropic’s chatbot Claude seems to have benefited from the attention around t...</p>
+                <div class="card-footer">
+                    <span class="author">Anthony Ha</span>
+                    <span class="date">02/28 21:05</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhdn1m/polymarket_defends_its_decision_to_allow_betting/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/BEezIhvUh1k8hlsiDUCehyvAWUL378BQmWBbSHXFJcM.png?width=640&crop=smart&auto=webp&s=87d6ffb8bf00332b583bfbbdb1d0bc95a3869cad)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Polymarket defends its decision to allow betting...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhdn1m...</p>
+                <div class="card-footer">
+                    <span class="author">/u/MarvelsGrantMan136</span>
+                    <span class="date">02/28 20:50</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://techcrunch.com/2026/02/28/billion-dollar-infrastructure-deals-ai-boom-data-centers-openai-oracle-nvidia-microsoft-google-meta/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">The billion-dollar infrastructure deals powering...</h3>
+                <p class="card-summary">Here's everything we know about the biggest AI infrastructure projects, includ...</p>
+                <div class="card-footer">
+                    <span class="author">Russell Brandom</span>
+                    <span class="date">02/28 20:41</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhay5f/a_new_us_military_task_force_just_used_its_cheap/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/rWR7iQYd22XfWREemLcBrGcTNBt1R-sPv5dCWaNXnTs.jpeg?width=640&crop=smart&auto=webp&s=37136d6d667889c860e36e71bdb13955d6bba7a7)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">A new US military task force just used its cheap...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhay5f...</p>
+                <div class="card-footer">
+                    <span class="author">/u/Scary_Statement4612</span>
+                    <span class="date">02/28 19:03</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://www.reddit.com/r/technology/comments/1rhawy0/anthropics_claude_hits_no_2_on_apples_top_free/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/4kWWEaP_49RhEs4zzJV2FjnOSy1D42ye4K50hTtPuAs.jpeg?width=640&crop=smart&auto=webp&s=6584a7183125b076c00f1ef1518072952d286266)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Anthropic's Claude hits No. 2 on Apple's top fre...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rhawy0...</p>
+                <div class="card-footer">
+                    <span class="author">/u/mr-french-tickler</span>
+                    <span class="date">02/28 19:02</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://www.reddit.com/r/technology/comments/1rh882s/cancel_chatgpt_movement_goes_big_after_openais/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/OC0Me7K7GnVcl4xC2Mp-Cjjs0RXCHMueR3kw_bmmfI0.jpeg?width=640&crop=smart&auto=webp&s=7c09d5a9c35cd7840db9f24dede66571b7f33e97)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">"Cancel ChatGPT" movement goes big after OpenAI'...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rh882s...</p>
+                <div class="card-footer">
+                    <span class="author">/u/gdelacalle</span>
+                    <span class="date">02/28 17:18</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.ifanr.com/1656255?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
+            <div class="card-img" style="background-image: url(https://s3.ifanr.com/wp-content/uploads/2026/03/asfgasdg.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">小米超跑正式亮相！ 小米 Vision GT 带着两大「黑科技」来了</h3>
+                <p class="card-summary">下单《GT 赛车 7》，你就可以开上它了。<p>#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p><p>
+...</p>
+                <div class="card-footer">
+                    <span class="author">李华</span>
+                    <span class="date">02/28 16:54</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://techcrunch.com/2026/02/28/openais-sam-altman-announces-pentagon-deal-with-technical-safeguards/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">OpenAI’s Sam Altman announces Pentagon deal with...</h3>
+                <p class="card-summary">OpenAI's CEO claims its new defense contract includes protections addressing t...</p>
+                <div class="card-footer">
+                    <span class="author">Anthony Ha</span>
+                    <span class="date">02/28 16:17</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/nasa-is-making-big-changes-to-speed-up-the-artemis-program/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a1fc5ccd255f245e966b8e/master/pass/sci-artemis2-2256758081.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">NASA Is Making Big Changes to Speed Up the Artem...</h3>
+                <p class="card-summary">America’s journey back to the moon has run into a few missteps. NASA administr...</p>
+                <div class="card-footer">
+                    <span class="author">Eric Berger, Ars Technica</span>
+                    <span class="date">02/28 16:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/hacked-prayer-app-sends-surrender-messages-to-iranians-amid-israeli-strikes/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a2fc44d16e57b38c5e2d95/master/pass/MobileHackLead.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Hacked Prayer App Sends ‘Surrender’ Messages to ...</h3>
+                <p class="card-summary">As Israeli airstrikes hit Tehran this morning, Iranians received mysterious pu...</p>
+                <div class="card-footer">
+                    <span class="author">Ruchi Kumar</span>
+                    <span class="date">02/28 15:58</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/hacked-prayer-app-sends-surrender-messages-to-iranians-amid-israeli-strikes/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a2fc44d16e57b38c5e2d95/master/pass/MobileHackLead.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Hacked Prayer App Sends ‘Surrender’ Messages to ...</h3>
+                <p class="card-summary">As Israeli airstrikes hit Tehran this morning, Iranians received mysterious pu...</p>
+                <div class="card-footer">
+                    <span class="author">Ruchi Kumar</span>
+                    <span class="date">02/28 15:58</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/tech/887040/polymarket-iran-war-betting-invaluable', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/Screenshot-2026-02-28-at-3.31.33%E2%80%AFPM.png?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Polymarket defends its decision to allow betting...</h3>
+                <p class="card-summary">Polymarket has been allowing people to bet on when the US would strike Iran ne...</p>
+                <div class="card-footer">
+                    <span class="author">Terrence O’Brien</span>
+                    <span class="date">02/28 15:46</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/uae-missile-intercept-system-iran/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a2ffd3d16e57b38c5e2d9a/master/pass/2263468713)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">This Is the System That Intercepted Iran's Missi...</h3>
+                <p class="card-summary">As Iranian missiles targeted US-linked sites across the Gulf, the UAE’s missil...</p>
+                <div class="card-footer">
+                    <span class="author">Dana Alomar</span>
+                    <span class="date">02/28 15:12</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/uae-missile-intercept-system-iran/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a2ffd3d16e57b38c5e2d9a/master/pass/2263468713)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">This Is the System That Intercepted Iran’s Missi...</h3>
+                <p class="card-summary">As Iranian missiles targeted US-linked sites across the Gulf, the UAE’s missil...</p>
+                <div class="card-footer">
+                    <span class="author">Dana Alomar</span>
+                    <span class="date">02/28 15:12</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://techcrunch.com/2026/02/28/xiaomi-launches-17-ultra-smartphone-an-airtag-clone-and-an-ultra-slim-powerbank/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Xiaomi launches 17 Ultra smartphone, an AirTag c...</h3>
+                <p class="card-summary">We round up everything Xiaomi announced at its Mobile World Congress event.</p>
+                <div class="card-footer">
+                    <span class="author">Ivan Mehta</span>
+                    <span class="date">02/28 15:09</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://techcrunch.com/2026/02/28/why-chinas-humanoid-robot-industry-is-winning-the-early-market/', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Why China’s humanoid robot industry is winning t...</h3>
+                <p class="card-summary">China’s push into humanoid robots is accelerating, with domestic firms shippin...</p>
+                <div class="card-footer">
+                    <span class="author">Kate Park</span>
+                    <span class="date">02/28 15:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/science/887037/vera-c-rubin-observatory-800000-alerts', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2025/06/NSF-DOE-Vera-C.-Rubin-Observatory-2.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">The Rubin Observatory’s alert system sent 800,00...</h3>
+                <p class="card-summary">The Vera C. Rubin Observatory's automated alert system is online and already b...</p>
+                <div class="card-footer">
+                    <span class="author">Terrence O’Brien</span>
+                    <span class="date">02/28 14:33</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://www.wired.com/review/xiaomi-17-ultra-leitzphone/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a25bc28fe42fcd6044ab2f/master/pass/Xiaomi%20Leitzphone%20with%20Photography%20Kit%202%20%20SOURCE%20Simon%20Hill.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Review: Xiaomi 17 Ultra and Leitzphone Pack Leic...</h3>
+                <p class="card-summary">The latest Xiaomi flagship is a beast and comes in a specially co-designed Lei...</p>
+                <div class="card-footer">
+                    <span class="author">Simon Hill</span>
+                    <span class="date">02/28 14:32</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rh40pt/alaska_house_passes_bill_limiting_ai_sexual/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/F1gNQoFkoXpJX4_67ObgwLiJhsmeLrJWyEYAm5NF_6M.jpeg?width=640&crop=smart&auto=webp&s=972f3ba095efe2f499fb5a8a35cdd319d52fba3a)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Alaska House passes bill limiting AI sexual imag...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rh40pt...</p>
+                <div class="card-footer">
+                    <span class="author">/u/Haunterblademoi</span>
+                    <span class="date">02/28 14:28</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rh2s79/warner_bros_discovery_ceo_david_zaslav_tries_to/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/Vr3YDy6hq6VabUoY-jsGSzy8VXDo8wRyw_OSi420Yeo.jpeg?width=640&crop=smart&auto=webp&s=c48d5b38543afbda635b508f21b00ce7f5fe76c0)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Warner Bros. Discovery CEO David Zaslav Tries To...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rh2s79...</p>
+                <div class="card-footer">
+                    <span class="author">/u/ControlCAD</span>
+                    <span class="date">02/28 13:34</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.qbitai.com/2026/02/382952.html', '_blank')">
+            <div class="card-img" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">海淀放大招！90亿资金+近30条政策，重磅释放三大科创关键信号</h3>
+                
+                <div class="card-footer">
+                    <span class="author">田, 晏林</span>
+                    <span class="date">02/28 12:59</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/gallery/best-toiletry-bags/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/682e3843c1db3fd9eacdf22f/master/pass/The-Best-Toiletry-Bags.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">14 Best Travel Toiletry Bags, Tested Over Many M...</h3>
+                <p class="card-summary">Our team evaluated a ton of toiletry bags to find the best storage, organizati...</p>
+                <div class="card-footer">
+                    <span class="author">Kat Merck</span>
+                    <span class="date">02/28 12:30</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.reddit.com/r/technology/comments/1rh17h9/youtube_shorts_and_instagram_reels_are_making_you/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/igjShNPrvmgu7BGzsWZLmgyOVvkOIfqY8QJSpiBiqv0.jpeg?width=640&crop=smart&auto=webp&s=14c0f42df3fc43854090cf40db0865228b6c45b3)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">YouTube Shorts and Instagram Reels are making yo...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rh17h9...</p>
+                <div class="card-footer">
+                    <span class="author">/u/tylerthe-theatre</span>
+                    <span class="date">02/28 12:17</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/gallery/best-micro-sd-cards/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a268e4067f37c7d49f54f6/master/pass/The%20Best%20MicroSD%20Cards%20I've%20Tried.png)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">The Best MicroSD Cards for Your Camera, Switch, ...</h3>
+                <p class="card-summary">Everything you need to know about memory cards for cameras, video game systems...</p>
+                <div class="card-footer">
+                    <span class="author">Brad Bourque</span>
+                    <span class="date">02/28 12:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/best-laptop-cooling-pad/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a252bf649b7677b3e2628d/master/pass/IMG_3052.JPG)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">The Best Laptop Cooling Pad and Why You Should B...</h3>
+                <p class="card-summary">Most laptop cooling pads are useless, but if you get the right one, it can mak...</p>
+                <div class="card-footer">
+                    <span class="author">Luke Larsen</span>
+                    <span class="date">02/28 11:38</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/security-news-this-week-area-man-accidentally-hacks-6700-camera-enabled-robot-vacuums/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a203e0a1f07be8b2d1f0b8/master/pass/sec-roundup-romo-2228166651.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Area Man Accidentally Hacks 6,700 Camera-Enabled...</h3>
+                <p class="card-summary">Plus: The top US cyber agency falls into shambles, AI models develop an upsett...</p>
+                <div class="card-footer">
+                    <span class="author">Andy Greenberg, Lily Hay Newman, Maddy Varner</span>
+                    <span class="date">02/28 11:30</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/gadgets/886520/bose-quietcomfort-headphones-samsung-galaxy-s26-ultra-deal-sale', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/Bose-QuietComfort-Headphones-Deal-Image.png?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">You can still grab great deals on Bose headphone...</h3>
+                <p class="card-summary">Welcome to the weekend, friends! While the rest of our team was checking out S...</p>
+                <div class="card-footer">
+                    <span class="author">Brandon Widder</span>
+                    <span class="date">02/28 11:07</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/everyplate-vegetarian-meal-kit-rave/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a1fd5faa7fa275477628a5/master/pass/EveryPlate%20Is%20Cheaper%20Than%20Any%20Meal%20Kit%20I've%20Tried%20(and%20Is%20Surprisingly%20Tasty).png)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">EveryPlate’s Meal Kit Offers Affordable Vegetari...</h3>
+                <p class="card-summary">HelloFresh’s budget subsidiary surprised me with its basic but tasty vegetaria...</p>
+                <div class="card-footer">
+                    <span class="author">Molly Higgins</span>
+                    <span class="date">02/28 11:02</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/water-filter-explainer-nsf-verifications/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a2079371b3466d9ed712df/master/pass/Water%20Filter%20Explainer.png)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Which Water Filter Pitchers Filter PFAS? How to ...</h3>
+                <p class="card-summary">Checking up on the claims of water filter makers can be a discomfiting maze. H...</p>
+                <div class="card-footer">
+                    <span class="author">Matthew Korfhage</span>
+                    <span class="date">02/28 10:36</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/this-helmet-ruined-my-ski-holiday/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/699eebc38e84ee9a5aefef24/master/pass/IMG_6457-Edit-Top-Art.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">This Ruroc Helmet Ruined My Ski Holiday</h3>
+                <p class="card-summary">Branded intimidating and scary, this full-face Ruroc headgear for the slopes m...</p>
+                <div class="card-footer">
+                    <span class="author">Jeremy White</span>
+                    <span class="date">02/28 10:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.wired.com/story/us-iran-strike-donald-trump/', '_blank')">
+            <div class="card-img" style="background-image: url(https://media.wired.com/photos/69a2b22e067f37c7d49f5f18/master/pass/GettyImages-2263410312.jpg)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">US and Israel Launch Strikes Against Iran</h3>
+                <p class="card-summary">US president Donald Trump said a “major combat operation” against Iran had beg...</p>
+                <div class="card-footer">
+                    <span class="author">Matt Burgess</span>
+                    <span class="date">02/28 09:42</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/tech/884567/xiaomi-tag-tracker-apple-find-my-google-hub-bluetooth', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/xiaomi_tag2.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Xiaomi’s tracker doesn’t need a case to clip to ...</h3>
+                <p class="card-summary">Xiaomi has announced its first Bluetooth tracker, and while the Xiaomi Tag has...</p>
+                <div class="card-footer">
+                    <span class="author">Andrew Liszewski</span>
+                    <span class="date">02/28 09:30</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/gadgets/886131/xiaomi-leica-leitzphone-17-ultra-review', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/leica-leitzphone-xiaomi-17-ultra-06.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Xiaomi’s Leica Leitzphone mostly earns the name</h3>
+                <p class="card-summary">Xiaomi and Leica's long-running phone partnership just got a little closer. Al...</p>
+                <div class="card-footer">
+                    <span class="author">Dominic Preston</span>
+                    <span class="date">02/28 09:30</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/gadgets/886322/xiaomi-17-release-specs-price-mwc-ultra-leica', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/xiaomi-17-ultra-2.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Xiaomi 17 is a small(ish) phone with a big(ish) ...</h3>
+                <p class="card-summary">Xiaomi has just given a global launch to two of its latest flagship phones, th...</p>
+                <div class="card-footer">
+                    <span class="author">Dominic Preston</span>
+                    <span class="date">02/28 09:30</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="AI科技" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgy3sd/employees_at_google_and_openai_support_anthropics/', '_blank')">
+            <div class="card-img" style="background-image: url(https://external-preview.redd.it/fl9UAq9XCni-nEQHjTzdHTn5RYIDdqC4Id8z3-i2hXY.jpeg?width=640&crop=smart&auto=webp&s=337f0012ffbff1a92e5e41c37a1d43200df86f28)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">AI科技</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">Employees at Google and OpenAI support Anthropic...</h3>
+                <p class="card-summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgy3sd...</p>
+                <div class="card-footer">
+                    <span class="author">/u/Logical_Welder3467</span>
+                    <span class="date">02/28 09:13</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.theverge.com/entertainment/885432/reigns-the-witcher-interview-steam-iphone-android', '_blank')">
+            <div class="card-img" style="background-image: url(https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/ss_24697beeceaf90658f9429787136b4c36148d529.1920x1080.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">The Witcher is a perfect fit for Reigns’ Tinder-...</h3>
+                <p class="card-summary">I never knew how easy it was to die in an orgy. But that's just one of the man...</p>
+                <div class="card-footer">
+                    <span class="author">Andrew Webster</span>
+                    <span class="date">02/28 09:00</span>
+                </div>
+            </div>
+        </article>
+        
+        <article class="card" data-category="科技产业" onclick="window.open('https://www.ifanr.com/1656044?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
+            <div class="card-img" style="background-image: url(https://s3.ifanr.com/wp-content/uploads/2026/02/Burger-King-Employee-Kitchen.png)"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="cat-tag">科技产业</span>
+                    <span class="badge new">🆕</span>
+                    <span class="time">1天前</span>
+                </div>
+                <h3 class="card-title">汉堡王给员工戴上 AI 耳机：你的每一句「谢谢」，都在被 AI 打分</h3>
+                <p class="card-summary">不能指望用工具，去填补使用工具的能力。<p>#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p><p>
+<a...</p>
+                <div class="card-footer">
+                    <span class="author">Selina</span>
+                    <span class="date">02/28 08:08</span>
+                </div>
+            </div>
+        </article>
+        
         </div>
         
-        <div class="category-section">
-            <h3>AI前沿 (119)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('AI大模型')">AI大模型(93)</span><span class="tag" onclick="filterBySubCategory('其他')">其他(6)</span><span class="tag" onclick="filterBySubCategory('创业')">创业(6)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(6)</span><span class="tag" onclick="filterBySubCategory('具身智能')">具身智能(2)</span><span class="tag" onclick="filterBySubCategory('投资')">投资(2)</span><span class="tag" onclick="filterBySubCategory('AI应用')">AI应用(1)</span><span class="tag" onclick="filterBySubCategory('教育')">教育(1)</span><span class="tag" onclick="filterBySubCategory('科技产业')">科技产业(1)</span><span class="tag" onclick="filterBySubCategory('股市')">股市(1)</span></div>
-        </div>
-        
-        <div class="category-section">
-            <h3>AI科技 (62)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('AI大模型')">AI大模型(5)</span><span class="tag" onclick="filterBySubCategory('创业')">创业(2)</span><span class="tag" onclick="filterBySubCategory('国际')">国际(1)</span><span class="tag" onclick="filterBySubCategory('科技产业')">科技产业(1)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(1)</span></div>
-        </div>
-        
-        <div class="category-section">
-            <h3>优质RSS源 (42)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('AI大模型')">AI大模型(8)</span><span class="tag" onclick="filterBySubCategory('具身智能')">具身智能(7)</span><span class="tag" onclick="filterBySubCategory('其他')">其他(5)</span><span class="tag" onclick="filterBySubCategory('科技产业')">科技产业(4)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(4)</span><span class="tag" onclick="filterBySubCategory('AI应用')">AI应用(2)</span><span class="tag" onclick="filterBySubCategory('投资')">投资(2)</span><span class="tag" onclick="filterBySubCategory('教育')">教育(2)</span><span class="tag" onclick="filterBySubCategory('消费')">消费(2)</span><span class="tag" onclick="filterBySubCategory('股市')">股市(2)</span><span class="tag" onclick="filterBySubCategory('公司财报')">公司财报(1)</span><span class="tag" onclick="filterBySubCategory('商业战略')">商业战略(1)</span><span class="tag" onclick="filterBySubCategory('国际')">国际(1)</span><span class="tag" onclick="filterBySubCategory('游戏')">游戏(1)</span></div>
-        </div>
-        
-        <div class="category-section">
-            <h3>金融科技 (13)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('投资')">投资(5)</span><span class="tag" onclick="filterBySubCategory('股市')">股市(3)</span><span class="tag" onclick="filterBySubCategory('具身智能')">具身智能(2)</span><span class="tag" onclick="filterBySubCategory('AI应用')">AI应用(1)</span><span class="tag" onclick="filterBySubCategory('房产')">房产(1)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(1)</span></div>
-        </div>
-        
-        <div class="category-section">
-            <h3>智能金融速递 (8)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('投资')">投资(4)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(2)</span></div>
-        </div>
-        
-        <div class="category-section">
-            <h3>今日要闻 (7)</h3>
-            <div class="sub-tags"><span class="tag" onclick="filterBySubCategory('国际')">国际(2)</span><span class="tag" onclick="filterBySubCategory('投资')">投资(2)</span><span class="tag" onclick="filterBySubCategory('具身智能')">具身智能(1)</span><span class="tag" onclick="filterBySubCategory('创业')">创业(1)</span><span class="tag" onclick="filterBySubCategory('芯片算力')">芯片算力(1)</span></div>
-        </div>
-        
-        </div>
-        
-        <div class="articles" id="articles">
-            
-        <article class="card" onclick="window.open('https://www.wired.com/story/hacked-prayer-app-sends-surrender-messages-to-iranians-amid-israeli-strikes/', '_blank')">
-            <img src="https://media.wired.com/photos/69a2fc44d16e57b38c5e2d95/master/pass/MobileHackLead.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Hacked Prayer App Sends ‘Surrender’ Messages to Iranians Amid Israeli Strikes</h3>
-                <p class="summary">As Israeli airstrikes hit Tehran this morning, Iranians received mysterious push notifications sayin...</p>
-                <span class="meta">Ruchi Kumar · 2026年02月28日 15:58 · 8小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/uae-missile-intercept-system-iran/', '_blank')">
-            <img src="https://media.wired.com/photos/69a2ffd3d16e57b38c5e2d9a/master/pass/2263468713" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>This Is the System That Intercepted Iran's Missiles Over the UAE</h3>
-                <p class="summary">As Iranian missiles targeted US-linked sites across the Gulf, the UAE’s missile shield was activated...</p>
-                <span class="meta">Dana Alomar · 2026年02月28日 15:12 · 8小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://techcrunch.com/2026/02/28/xiaomi-launches-17-ultra-smartphone-an-airtag-clone-and-an-ultra-slim-powerbank/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Xiaomi launches 17 Ultra smartphone, an AirTag clone, and an ultra slim powerbank</h3>
-                <p class="summary">We round up everything Xiaomi announced at its Mobile World Congress event....</p>
-                <span class="meta">Ivan Mehta · 2026年02月28日 15:09 · 8小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://techcrunch.com/2026/02/28/why-chinas-humanoid-robot-industry-is-winning-the-early-market/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Why China’s humanoid robot industry is winning the early market</h3>
-                <p class="summary">China’s push into humanoid robots is accelerating, with domestic firms shipping more units and itera...</p>
-                <span class="meta">Kate Park · 2026年02月28日 15:00 · 9小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/review/xiaomi-17-ultra-leitzphone/', '_blank')">
-            <img src="https://media.wired.com/photos/69a25bc28fe42fcd6044ab2f/master/pass/Xiaomi%20Leitzphone%20with%20Photography%20Kit%202%20%20SOURCE%20Simon%20Hill.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Review: Xiaomi 17 Ultra and Leitzphone Pack Leica Magic Into a Flagship Phone</h3>
-                <p class="summary">The latest Xiaomi flagship is a beast and comes in a specially co-designed Leica edition that’s pict...</p>
-                <span class="meta">Simon Hill · 2026年02月28日 14:32 · 9小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rh2s79/warner_bros_discovery_ceo_david_zaslav_tries_to/', '_blank')">
-            <img src="https://external-preview.redd.it/Vr3YDy6hq6VabUoY-jsGSzy8VXDo8wRyw_OSi420Yeo.jpeg?width=640&crop=smart&auto=webp&s=c48d5b38543afbda635b508f21b00ce7f5fe76c0" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Warner Bros. Discovery CEO David Zaslav Tries To Sell Paramount Deal To Shocked & Disappointed Employees At Town Hall: “We’re The Envy Of All Of The Industry”</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rh2s79/warner_bros_discovery...</p>
-                <span class="meta">/u/ControlCAD · 2026年02月28日 13:34 · 10小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.qbitai.com/2026/02/382952.html', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>海淀放大招！90亿资金+近30条政策，重磅释放三大科创关键信号</h3>
-                <p class="summary">...</p>
-                <span class="meta">田, 晏林 · 2026年02月28日 12:59 · 11小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/gallery/best-toiletry-bags/', '_blank')">
-            <img src="https://media.wired.com/photos/682e3843c1db3fd9eacdf22f/master/pass/The-Best-Toiletry-Bags.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>14 Best Travel Toiletry Bags, Tested Over Many Miles (2026)</h3>
-                <p class="summary">Our team evaluated a ton of toiletry bags to find the best storage, organization, and design options...</p>
-                <span class="meta">Kat Merck · 2026年02月28日 12:30 · 11小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rh17h9/youtube_shorts_and_instagram_reels_are_making_you/', '_blank')">
-            <img src="https://external-preview.redd.it/igjShNPrvmgu7BGzsWZLmgyOVvkOIfqY8QJSpiBiqv0.jpeg?width=640&crop=smart&auto=webp&s=14c0f42df3fc43854090cf40db0865228b6c45b3" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>YouTube Shorts and Instagram Reels are making you dumber, according to science</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rh17h9/youtube_shorts_and_in...</p>
-                <span class="meta">/u/tylerthe-theatre · 2026年02月28日 12:17 · 11小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/gallery/best-micro-sd-cards/', '_blank')">
-            <img src="https://media.wired.com/photos/69a268e4067f37c7d49f54f6/master/pass/The%20Best%20MicroSD%20Cards%20I've%20Tried.png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>The Best MicroSD Cards for Your Camera, Switch, and More</h3>
-                <p class="summary">Everything you need to know about memory cards for cameras, video game systems, and more....</p>
-                <span class="meta">Brad Bourque · 2026年02月28日 12:00 · 12小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/best-laptop-cooling-pad/', '_blank')">
-            <img src="https://media.wired.com/photos/69a252bf649b7677b3e2628d/master/pass/IMG_3052.JPG" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>The Best Laptop Cooling Pad and Why You Should Buy One</h3>
-                <p class="summary">Most laptop cooling pads are useless, but if you get the right one, it can make a huge impact on how...</p>
-                <span class="meta">Luke Larsen · 2026年02月28日 11:38 · 12小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/security-news-this-week-area-man-accidentally-hacks-6700-camera-enabled-robot-vacuums/', '_blank')">
-            <img src="https://media.wired.com/photos/69a203e0a1f07be8b2d1f0b8/master/pass/sec-roundup-romo-2228166651.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Area Man Accidentally Hacks 6,700 Camera-Enabled Robot Vacuums</h3>
-                <p class="summary">Plus: The top US cyber agency falls into shambles, AI models develop an upsetting penchant for nucle...</p>
-                <span class="meta">Andy Greenberg, Lily Hay Newman, Maddy Varner · 2026年02月28日 11:30 · 12小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/everyplate-vegetarian-meal-kit-rave/', '_blank')">
-            <img src="https://media.wired.com/photos/69a1fd5faa7fa275477628a5/master/pass/EveryPlate%20Is%20Cheaper%20Than%20Any%20Meal%20Kit%20I've%20Tried%20(and%20Is%20Surprisingly%20Tasty).png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>EveryPlate’s Meal Kit Offers Affordable Vegetarian Options</h3>
-                <p class="summary">HelloFresh’s budget subsidiary surprised me with its basic but tasty vegetarian meal selection....</p>
-                <span class="meta">Molly Higgins · 2026年02月28日 11:02 · 13小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/water-filter-explainer-nsf-verifications/', '_blank')">
-            <img src="https://media.wired.com/photos/69a2079371b3466d9ed712df/master/pass/Water%20Filter%20Explainer.png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Which Water Filter Pitchers Filter PFAS? How to Check</h3>
-                <p class="summary">Checking up on the claims of water filter makers can be a discomfiting maze. Here's how to verify in...</p>
-                <span class="meta">Matthew Korfhage · 2026年02月28日 10:36 · 13小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/this-helmet-ruined-my-ski-holiday/', '_blank')">
-            <img src="https://media.wired.com/photos/699eebc38e84ee9a5aefef24/master/pass/IMG_6457-Edit-Top-Art.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>This Ruroc Helmet Ruined My Ski Holiday</h3>
-                <p class="summary">Branded intimidating and scary, this full-face Ruroc headgear for the slopes made me a pariah on the...</p>
-                <span class="meta">Jeremy White · 2026年02月28日 10:00 · 14小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/us-iran-strike-donald-trump/', '_blank')">
-            <img src="https://media.wired.com/photos/69a2b22e067f37c7d49f5f18/master/pass/GettyImages-2263410312.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>US and Israel Launch Strikes Against Iran</h3>
-                <p class="summary">US president Donald Trump said a “major combat operation” against Iran had begun as he called for th...</p>
-                <span class="meta">Matt Burgess · 2026年02月28日 09:42 · 14小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.theverge.com/tech/884567/xiaomi-tag-tracker-apple-find-my-google-hub-bluetooth', '_blank')">
-            <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/xiaomi_tag2.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Xiaomi’s tracker doesn’t need a case to clip to your keys</h3>
-                <p class="summary">Xiaomi has announced its first Bluetooth tracker, and while the Xiaomi Tag has a more elongated desi...</p>
-                <span class="meta">Andrew Liszewski · 2026年02月28日 09:30 · 14小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.theverge.com/gadgets/886131/xiaomi-leica-leitzphone-17-ultra-review', '_blank')">
-            <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/leica-leitzphone-xiaomi-17-ultra-06.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Xiaomi’s Leica Leitzphone mostly earns the name</h3>
-                <p class="summary">Xiaomi and Leica's long-running phone partnership just got a little closer. Alongside the new intern...</p>
-                <span class="meta">Dominic Preston · 2026年02月28日 09:30 · 14小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.theverge.com/gadgets/886322/xiaomi-17-release-specs-price-mwc-ultra-leica', '_blank')">
-            <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/xiaomi-17-ultra-2.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Xiaomi 17 is a small(ish) phone with a big(ish) battery</h3>
-                <p class="summary">Xiaomi has just given a global launch to two of its latest flagship phones, the Xiaomi 17 and 17 Ult...</p>
-                <span class="meta">Dominic Preston · 2026年02月28日 09:30 · 14小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgy3sd/employees_at_google_and_openai_support_anthropics/', '_blank')">
-            <img src="https://external-preview.redd.it/fl9UAq9XCni-nEQHjTzdHTn5RYIDdqC4Id8z3-i2hXY.jpeg?width=640&crop=smart&auto=webp&s=337f0012ffbff1a92e5e41c37a1d43200df86f28" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Employees at Google and OpenAI support Anthropic’s Pentagon stand in open letter</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgy3sd/employees_at_google_a...</p>
-                <span class="meta">/u/Logical_Welder3467 · 2026年02月28日 09:13 · 14小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.theverge.com/entertainment/885432/reigns-the-witcher-interview-steam-iphone-android', '_blank')">
-            <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/ss_24697beeceaf90658f9429787136b4c36148d529.1920x1080.jpg?quality=90&#038;strip=all&#038;crop=0,0,100,100" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>The Witcher is a perfect fit for Reigns’ Tinder-like roleplaying</h3>
-                <p class="summary">I never knew how easy it was to die in an orgy. But that's just one of the many threats facing Geral...</p>
-                <span class="meta">Andrew Webster · 2026年02月28日 09:00 · 15小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.ifanr.com/1656044?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
-            <img src="https://s3.ifanr.com/wp-content/uploads/2026/02/Burger-King-Employee-Kitchen.png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>汉堡王给员工戴上 AI 耳机：你的每一句「谢谢」，都在被 AI 打分</h3>
-                <p class="summary">不能指望用工具，去填补使用工具的能力。<p>#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p><p>
-<a href="https://www.ifa...</p>
-                <span class="meta">Selina · 2026年02月28日 08:08 · 15小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.theverge.com/tech/886462/acme-weather-samsung-s26-installer', '_blank')">
-            <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/Installer-117.png?quality=90&#038;strip=all&#038;crop=0,0,100,100" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>A legendary weather app makes a comeback</h3>
-                <p class="summary">Hi, friends! Welcome to Installer No. 117, your guide to the best and Verge-iest stuff in the world....</p>
-                <span class="meta">David Pierce · 2026年02月28日 08:00 · 16小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.ifanr.com/1656135?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
-            <img src="https://s3.ifanr.com/wp-content/uploads/2026/02/coverfinal.png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Nano Banana 2 的 5 个神级玩法，还是 AI 生图的神，建议收藏（附提示词）</h3>
-                <p class="summary">边养龙虾🦞，边吃香蕉🍌<p>#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p><p>
-<a href="https://www.ifanr.com">...</p>
-                <span class="meta">张子豪 · 2026年02月28日 04:24 · 19小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://techcrunch.com/2026/02/27/india-disrupts-access-to-popular-developer-platform-supabase-with-blocking-order/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>India disrupts access to popular developer platform Supabase with blocking order</h3>
-                <p class="summary">India, one of Supabase’s biggest markets, is seeing patchy access after a government block order....</p>
-                <span class="meta">Jagmeet Singh · 2026年02月28日 03:51 · 20小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.qbitai.com/2026/02/382934.html', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>OpenAI最新融资1100亿美元！英伟达亚马逊软银都抢到船票了</h3>
-                <p class="summary">...</p>
-                <span class="meta">听雨 · 2026年02月28日 03:50 · 20小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/anthropic-supply-chain-risk-shockwaves-silicon-valley/', '_blank')">
-            <img src="https://media.wired.com/photos/69a23b028618f79c55732aa9/master/pass/Anthropic-Supply-Chain-Risk-Business-2261589216.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Anthropic Hits Back After US Military Labels It a 'Supply Chain Risk'</h3>
-                <p class="summary">Anthropic says it would be “legally unsound” for the Pentagon to blacklist its technology after talk...</p>
-                <span class="meta">Maxwell Zeff, Will Knight, Lauren Goode, Paresh Dave · 2026年02月28日 03:30 · 20小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/anthropic-supply-chain-risk-shockwaves-silicon-valley/', '_blank')">
-            <img src="https://media.wired.com/photos/69a23b028618f79c55732aa9/master/pass/Anthropic-Supply-Chain-Risk-Business-2261589216.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Anthropic Hits Back After US Military Labels It a ‘Supply Chain Risk’</h3>
-                <p class="summary">Anthropic says it would be “legally unsound” for the Pentagon to blacklist its technology after talk...</p>
-                <span class="meta">Maxwell Zeff, Will Knight, Lauren Goode, Paresh Dave · 2026年02月28日 03:30 · 20小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgrrx6/openai_reaches_deal_to_deploy_ai_models_on_us/', '_blank')">
-            <img src="https://external-preview.redd.it/NIhWdKIenMwSj_oZ6R6HetSZH8VUjUOo1o6mcFPdny0.jpeg?width=640&crop=smart&auto=webp&s=8504f4d84107423ef433190873b3ccfaf8a5d551" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>OpenAI reaches deal to deploy AI models on U.S. Department of War classified network</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgrrx6/openai_reaches_deal_t...</p>
-                <span class="meta">/u/Thalesian · 2026年02月28日 03:23 · 20小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://blog.timcappalli.me/p/passkeys-prf-warning/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Don't use passkeys for encrypting user data</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47189749">Comments</a>...</p>
-                <span class="meta">科技产业 · 2026年02月28日 03:11 · 20小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.theverge.com/reviews/885040/tenways-cgo-compact-review-sharable-adaptable', '_blank')">
-            <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/02/IMG_5543.jpeg?quality=90&#038;strip=all&#038;crop=0,0,100,100" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Tenways nearly perfects the shareable city e-bike</h3>
-                <p class="summary">Good electric bikes are expensive. So why not buy one and share it? That's the idea behind the Tenwa...</p>
-                <span class="meta">Thomas Ricker · 2026年02月28日 03:00 · 21小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://twitter.com/sama/status/2027578652477821175', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>OpenAI agrees with Dept. of War to deploy models in their classified network</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47189650">Comments</a>...</p>
-                <span class="meta">AI科技 · 2026年02月28日 02:59 · 21小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgqur7/anthropic_is_somehow_both_too_dangerous_to_allow/', '_blank')">
-            <img src="https://external-preview.redd.it/Sxnau-9G9O4EZ_kw3-3eCOppXKpDpDh09uiFcMdmkyY.jpeg?width=640&crop=smart&auto=webp&s=c17196091a20a5e2647fac353c98ec803f0cf20b" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Anthropic is somehow both too dangerous to allow and essential to national security</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgqur7/anthropic_is_somehow_...</p>
-                <span class="meta">/u/AdmiralSaturyn · 2026年02月28日 02:40 · 21小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.ifanr.com/1656107?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
-            <img src="https://s3.ifanr.com/wp-content/uploads/2026/02/wx-header.jpeg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>防窥，手机上最「见不得光」的技术｜硬哲学</h3>
-                <p class="summary">2026 年砸进池塘的第一颗石子。<p>#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。</p><p>
-<a href="https://www.ifanr...</p>
-                <span class="meta">马扶摇 · 2026年02月28日 01:21 · 22小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.anthropic.com/news/statement-comments-secretary-war', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>Statement on the comments from Secretary of War Pete Hegseth</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47188697">Comments</a>...</p>
-                <span class="meta">科技产业 · 2026年02月28日 01:20 · 22小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.ifanr.com/1656128?utm_source=rss&utm_medium=rss&utm_campaign=', '_blank')">
-            <img src="https://s3.ifanr.com/images/ep/cover-images/pao_bu_qian_jin_de_xiao_nv_hai_cover.jpg" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>早报｜雷军：小米坚持十倍投入打造安全好车/OpenAI获千亿美元融资/少卖1亿台，全球手机市场或创10年新低</h3>
-                <p class="summary">· 三星三折叠可能一代亡？总裁回应
-· 苹果否认夸大 AI Siri 预期
-· OPPO Find N6 将支持 AI 手写笔<p>#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精...</p>
-                <span class="meta">柯铭源 · 2026年02月28日 01:17 · 22小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://notdivided.org', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>We Will Not Be Divided</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47188473">Comments</a>...</p>
-                <span class="meta">科技产业 · 2026年02月28日 00:54 · 23小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgnlu8/openai_is_negotiating_with_the_us_government_sam/', '_blank')">
-            <img src="https://external-preview.redd.it/F0JTeFElG6usmxlIXfid87P47f3ci_9185R5IXbHCEw.jpeg?width=640&crop=smart&auto=webp&s=3dde8c1e84b9aee88c23b286fb1cd087716a9acb" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge hot">🔥 最新</span>
-                <h3>OpenAI is negotiating with the U.S. government, Sam Altman tells staff</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgnlu8/openai_is_negotiating...</p>
-                <span class="meta">/u/aacool · 2026年02月28日 00:12 · 23小时前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/gallery/best-wireless-chargers/', '_blank')">
-            <img src="https://media.wired.com/photos/685f6984f3c91f1a1ba5e76a/master/pass/The%20Best%20Wireless%20Chargers%20to%20Refuel%20Your%20Phone.png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>18 Best Wireless Chargers, All Tested and Reviewed (2026)</h3>
-                <p class="summary">Stop fumbling for cables in the dark. These WIRED-tested stands and pads will take the hassle out of...</p>
-                <span class="meta">Simon Hill, Julian Chokkattu · 2026年02月27日 23:51 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.science.org/doi/10.1126/science.adt2760', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>Qt45: A small polymerase ribozyme that can synthesize itself</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47187649">Comments</a>...</p>
-                <span class="meta">科技产业 · 2026年02月27日 23:42 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgmq6x/pentagon_moves_to_designate_anthropic_as_a/', '_blank')">
-            <img src="https://external-preview.redd.it/8OJPWdHn3vngRbk6IR4338LAEzp4Wj9pkCn-cABeafk.jpeg?width=640&crop=smart&auto=webp&s=afd04cd7bc9d74449b51e5905b4c099075319fef" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>Pentagon moves to designate Anthropic as a supply-chain risk</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgmq6x/pentagon_moves_to_des...</p>
-                <span class="meta">/u/Logical_Welder3467 · 2026年02月27日 23:36 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://techcrunch.com/2026/02/27/openai-fires-employee-for-using-confidential-info-on-prediction-markets/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>OpenAI fires employee for using confidential info on prediction markets</h3>
-                <p class="summary">The company said such trades violates its internal company policies about using confidential informa...</p>
-                <span class="meta">Julie Bort · 2026年02月27日 23:00 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://twitter.com/secwar/status/2027507717469049070?s=46', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>Department of War Designates Anthropic Supply Chain Risk</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47186677">Comments</a>...</p>
-                <span class="meta">AI科技 · 2026年02月27日 22:31 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://emt.pensoft.net/article/185117/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>Otters as Bioindicators of Estuarine Health</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47186444">Comments</a>...</p>
-                <span class="meta">科技产业 · 2026年02月27日 22:13 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgkj19/smartphone_market_poised_for_sharpest_decline_on/', '_blank')">
-            <img src="https://external-preview.redd.it/eXvLO5OFZfdzMDgrq_1uqR_3gnD4qJwWuzXgIt9_IBk.jpeg?width=640&crop=smart&auto=webp&s=7874b529a4fd9a2b798502cc03c5f747bad61ae1" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>Smartphone market poised for 'sharpest decline on record' in 2026</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgkj19/smartphone_market_poi...</p>
-                <span class="meta">/u/Dr_Neurol · 2026年02月27日 22:08 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://blog.cloudflare.com/the-most-seen-ui-on-the-internet-redesigning-turnstile-and-challenge-pages/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>The Most-Seen UI on the Internet? Redesigning Turnstile and Challenge Pages</h3>
-                <p class="summary"><a href="https://news.ycombinator.com/item?id=47186277">Comments</a>...</p>
-                <span class="meta">科技产业 · 2026年02月27日 22:00 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.wired.com/story/electric-scooters-spring-deals-2026/', '_blank')">
-            <img src="https://media.wired.com/photos/69a20ae5eb0d16f48f12ac6f/master/pass/Our%20Favorite%20Electric%20Scooters%20Just%20Dropped%20in%20Price.png" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>These Deals Can Have You Zipping Around on a New E-Scooter This Spring</h3>
-                <p class="summary">With spring just around the corner, now's the smart time to snag an electric scooter....</p>
-                <span class="meta">Boutayna Chokrane · 2026年02月27日 21:55 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://techcrunch.com/2026/02/27/president-trump-orders-federal-agencies-to-stop-using-anthropic-after-pentagon-dispute/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">AI科技</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>President Trump orders federal agencies to stop using Anthropic after Pentagon dispute</h3>
-                <p class="summary">"We don't need it, we don't want it, and will not do business with them again," the president wrote ...</p>
-                <span class="meta">Russell Brandom · 2026年02月27日 21:53 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.reddit.com/r/technology/comments/1rgk0xg/palantir_sues_swiss_magazine_for_accurately/', '_blank')">
-            <img src="https://external-preview.redd.it/QdCWJLZtSx1Ly9Z2yTbDMgT5dhGTgi8syC6l1SyLf7U.png?width=640&crop=smart&auto=webp&s=a1a6cfbe9524d8a1a6256dc8bc5c1b9956207d61" alt="" loading="lazy">
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>Palantir Sues Swiss Magazine For Accurately Reporting That The Swiss Government Didn’t Want Palantir</h3>
-                <p class="summary"><table> <tr><td> <a href="https://www.reddit.com/r/technology/comments/1rgk0xg/palantir_sues_swiss_m...</p>
-                <span class="meta">/u/binding_swamp · 2026年02月27日 21:48 · 1天前</span>
-            </div>
-        </article>
-        
-        <article class="card" onclick="window.open('https://www.technologyreview.com/2026/02/27/1133769/asme-finalist-reporting/', '_blank')">
-            
-            <div class="card-content">
-                <span class="category">科技产业</span>
-                <span class="time-badge new">🆕 更新</span>
-                <h3>MIT Technology Review is a 2026 ASME finalist in reporting</h3>
-                <p class="summary">The American Society of Magazine Editors has named MIT Technology Review as a finalist for a 2026 Na...</p>
-                <span class="meta">The Editors · 2026年02月27日 21:41 · 1天前</span>
-            </div>
-        </article>
-        
+        <!-- 广告位 2 -->
+        <div class="ad-banner" style="margin-top: 30px;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-6726601289992127"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
     </div>
     
+    <footer class="footer">
+        <p>© 2026 晓波智能资讯站 · 每日更新 AI 科技金融前沿资讯</p>
+    </footer>
+    
     <script>
-        function searchArticles(keyword) {
+        function filterCategory(cat) {
             const cards = document.querySelectorAll('.card');
-            keyword = keyword.toLowerCase();
+            const buttons = document.querySelectorAll('.cat-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
             cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                card.style.display = text.includes(keyword) ? 'block' : 'none';
+                if (cat === 'all' || card.dataset.category === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         }
-    </script>
-    <script>
+        
+        // 初始化广告
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 </body>
