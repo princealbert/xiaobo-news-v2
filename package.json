@@ -1,0 +1,9 @@
+{
+  "name": "xiaobo-news-v2",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Static site ready'",
+    "dev": "echo 'No dev server needed'"
+  },
+  "devDependencies": {}
+}

@@ -45,7 +45,7 @@ def get_time_ago(date_str):
     except:
         return ""
 
-def get_articles(limit=100):
+def get_articles(limit=30):
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
