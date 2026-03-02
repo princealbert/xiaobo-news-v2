@@ -77,8 +77,8 @@ def get_categories():
         return {}
 
 def generate_index_html(articles, categories):
-    logo_base64 = get_logo_base64()
-    logo_img = f"<img src='data:image/png;base64,{logo_base64}' alt='Logo'>" if logo_base64 else "🤖"
+    # 移除 Base64 logo，使用 emoji 减小文件大小
+    logo_img = "🤖"
     
     main_cats = list(categories.keys())[:7]
     cat_buttons = '<button class="cat-btn active" data-cat="all">全部</button>'
@@ -86,7 +86,7 @@ def generate_index_html(articles, categories):
         cat_buttons += f'<button class="cat-btn" data-cat="{cat}">{cat}</button>'
     
     cards_html = ""
-    for art in articles[:50]:
+    for art in articles[:20]:
         title = (art['title'] or "无标题")[:45] + ("..." if len(art['title'] or "") > 45 else "")
         category = art['category'] or ""
         sub_cat = art['sub_category'] or ""
