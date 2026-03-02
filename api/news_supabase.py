@@ -7,18 +7,27 @@ Vercel Serverless API - 获取新闻列表 (Supabase 版本)
 """
 
 import os
-from supabase import create_client, Client
+import psycopg2
 import json
+from datetime import datetime
 
-def get_supabase_client():
-    """获取 Supabase 客户端"""
-    supabase_url = os.environ.get('SUPABASE_URL')
-    supabase_key = os.environ.get('SUPABASE_KEY')
+def get_db_connection():
+    """获取数据库连接（使用 psycopg2 直连）"""
+    # 优先使用 DATABASE_URL，否则从 SUPABASE_URL 构建
+    database_url = os.environ.get('DATABASE_URL')
     
-    if not supabase_url or not supabase_key:
-        raise Exception("Missing SUPABASE_URL or SUPABASE_KEY environment variables")
+    if not database_url:
+        supabase_url = os.environ.get('SUPABASE_URL', '')
+        supabase_key = os.environ.get('SUPABASE_KEY', '')
+        
+        # 从 SUPABASE_URL 提取项目 ID
+        if 'supabase.co' in supabase_url:
+            project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
+            database_url = f'postgresql://postgres:{supabase_key}@db.{project_id}.supabase.co:5432/postgres'
+        else:
+            raise Exception("Missing DATABASE_URL or SUPABASE_URL")
     
-    return create_client(supabase_url, supabase_key)
+    return psycopg2.connect(database_url)
 
 def handler(event, context):
     """Vercel Serverless Function handler"""
@@ -32,38 +41,43 @@ def handler(event, context):
         # 计算偏移量
         offset = (page - 1) * limit
         
-        # 连接 Supabase
-        supabase = get_supabase_client()
+        # 连接数据库
+        conn = get_db_connection()
+        cursor = conn.cursor()
         
         # 构建查询
-        query = supabase.table('articles').select('*', count='exact')
+        base_query = "SELECT * FROM articles WHERE 1=1"
+        count_query = "SELECT COUNT(*) FROM articles WHERE 1=1"
+        params = []
         
         if category and category != '全部':
-            query = query.eq('category', category)
+            base_query += " AND category = %s"
+            count_query += " AND category = %s"
+            params.append(category)
         
-        # 执行查询
-        query = query.order('publish_date', desc=True).range(offset, offset + limit - 1)
-        response = query.execute()
+        # 获取总数
+        cursor.execute(count_query, params)
+        total = cursor.fetchone()[0]
         
-        # 格式化结果
+        # 获取文章
+        base_query += " ORDER BY publish_date DESC LIMIT %s OFFSET %s"
+        params.extend([limit, offset])
+        cursor.execute(base_query, params)
+        
+        rows = cursor.fetchall()
+        columns = ['id', 'title', 'link', 'summary', 'content', 'category', 'sub_category', 
+                   'author', 'publish_date', 'image_url', 'view_count', 'tags', 'ai_tags', 'level2']
+        
         articles = []
-        for row in response.data:
-            article = {
-                'id': row.get('id'),
-                'title': row.get('title', ''),
-                'link': row.get('link', ''),
-                'summary': row.get('summary', ''),
-                'category': row.get('category', ''),
-                'sub_category': row.get('sub_category', ''),
-                'author': row.get('author', ''),
-                'publish_date': row.get('publish_date', ''),
-                'image_url': row.get('image_url', ''),
-                'view_count': row.get('view_count', 0),
-                'tags': row.get('tags', ''),
-                'ai_tags': row.get('ai_tags', ''),
-                'level2': row.get('level2', '')
-            }
+        for row in rows:
+            article = dict(zip(columns, row))
+            # 转换日期格式
+            if article.get('publish_date'):
+                article['publish_date'] = article['publish_date'].isoformat() if hasattr(article['publish_date'], 'isoformat') else str(article['publish_date'])
             articles.append(article)
+        
+        cursor.close()
+        conn.close()
         
         return {
             'statusCode': 200,
@@ -73,7 +87,7 @@ def handler(event, context):
             },
             'body': json.dumps({
                 'data': articles,
-                'total': response.count,
+                'total': total,
                 'page': page,
                 'limit': limit
             }, ensure_ascii=False)

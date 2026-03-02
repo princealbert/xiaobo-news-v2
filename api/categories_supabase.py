@@ -3,37 +3,51 @@ Vercel Serverless API - 获取分类列表 (Supabase 版本)
 """
 
 import os
-from supabase import create_client, Client
+import psycopg2
 import json
 
-def get_supabase_client():
-    """获取 Supabase 客户端"""
-    supabase_url = os.environ.get('SUPABASE_URL')
-    supabase_key = os.environ.get('SUPABASE_KEY')
+def get_db_connection():
+    """获取数据库连接"""
+    database_url = os.environ.get('DATABASE_URL')
     
-    if not supabase_url or not supabase_key:
-        raise Exception("Missing SUPABASE_URL or SUPABASE_KEY environment variables")
+    if not database_url:
+        supabase_url = os.environ.get('SUPABASE_URL', '')
+        supabase_key = os.environ.get('SUPABASE_KEY', '')
+        
+        if 'supabase.co' in supabase_url:
+            project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
+            database_url = f'postgresql://postgres:{supabase_key}@db.{project_id}.supabase.co:5432/postgres'
+        else:
+            raise Exception("Missing DATABASE_URL or SUPABASE_URL")
     
-    return create_client(supabase_url, supabase_key)
+    return psycopg2.connect(database_url)
 
 def handler(event, context):
     """Vercel Serverless Function handler"""
     try:
-        # 连接 Supabase
-        supabase = get_supabase_client()
+        conn = get_db_connection()
+        cursor = conn.cursor()
         
-        # 调用数据库视图获取分类统计
-        response = supabase.rpc('category_stats').execute()
+        # 获取分类统计
+        cursor.execute('''
+            SELECT category, sub_category, COUNT(*) as count 
+            FROM articles 
+            WHERE category IS NOT NULL 
+            GROUP BY category, sub_category 
+            ORDER BY count DESC
+        ''')
         
-        # 格式化结果
+        rows = cursor.fetchall()
         categories = []
-        if response.data:
-            for row in response.data:
-                categories.append({
-                    'name': row.get('category', ''),
-                    'sub_category': row.get('sub_category', ''),
-                    'count': row.get('count', 0)
-                })
+        for row in rows:
+            categories.append({
+                'name': row[0],
+                'sub_category': row[1] or '',
+                'count': row[2]
+            })
+        
+        cursor.close()
+        conn.close()
         
         return {
             'statusCode': 200,
