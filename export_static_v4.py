@@ -86,7 +86,7 @@ def generate_index_html(articles, categories):
         cat_buttons += f'<button class="cat-btn" data-cat="{cat}">{cat}</button>'
     
     cards_html = ""
-    for art in articles[:20]:
+    for art in articles[:80]:
         title = (art['title'] or "无标题")[:45] + ("..." if len(art['title'] or "") > 45 else "")
         category = art['category'] or ""
         sub_cat = art['sub_category'] or ""
