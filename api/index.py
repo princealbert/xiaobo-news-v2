@@ -33,6 +33,10 @@ def get_db_connection():
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
+            # 记录请求信息
+            print(f"Request path: {self.path}")
+            print(f"Environment variables: DATABASE_URL={os.environ.get('DATABASE_URL', 'NOT SET')[:20]}...")
+            
             # 解析 URL 和查询参数
             parsed = urlparse(self.path)
             params = parse_qs(parsed.query)
@@ -41,12 +45,16 @@ class handler(BaseHTTPRequestHandler):
             limit = int(params.get('limit', ['20'])[0])
             category = params.get('category', [None])[0]
             
+            print(f"Query params: page={page}, limit={limit}, category={category}")
+            
             # 计算偏移量
             offset = (page - 1) * limit
             
             # 连接数据库
+            print("Connecting to database...")
             conn = get_db_connection()
             cursor = conn.cursor()
+            print("Database connected successfully")
             
             # 构建查询
             base_query = "SELECT * FROM articles WHERE 1=1"
@@ -96,10 +104,16 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(response_data, ensure_ascii=False).encode('utf-8'))
             
         except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Error: {error_details}")
             self.send_response(500)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
-            error_response = {'error': str(e)}
+            error_response = {
+                'error': str(e),
+                'details': error_details
+            }
             self.wfile.write(json.dumps(error_response, ensure_ascii=False).encode('utf-8'))
     
     def do_OPTIONS(self):
