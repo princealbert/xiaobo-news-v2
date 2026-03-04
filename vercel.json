@@ -1,7 +1,15 @@
 {
-  "outputDirectory": "dist",
   "framework": null,
-
+  "functions": {
+    "api/**/*.py": {
+      "runtime": "@vercel/python"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/public/(.*)", "destination": "/public/$1" },
+    { "source": "/(.*)", "destination": "/dist/$1" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
