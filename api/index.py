@@ -15,22 +15,23 @@ from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 
 def get_db_connection():
-    """获取数据库连接（使用 psycopg2 直连）"""
-    database_url = os.environ.get('DATABASE_URL')
+    """获取数据库连接（使用 Supabase 连接池）"""
+    supabase_url = os.environ.get('SUPABASE_URL', '')
+    supabase_key = os.environ.get('SUPABASE_KEY', '')
     
-    if not database_url:
-        supabase_url = os.environ.get('SUPABASE_URL', '')
-        supabase_key = os.environ.get('SUPABASE_KEY', '')
-        
-        if 'supabase.co' in supabase_url:
-            project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
-            # Supabase 需要 SSL 连接
-            database_url = f'postgresql://postgres:{supabase_key}@db.{project_id}.supabase.co:5432/postgres?sslmode=require'
-        else:
-            raise Exception("Missing DATABASE_URL or SUPABASE_URL")
+    if not supabase_url or not supabase_key:
+        raise Exception("Missing SUPABASE_URL or SUPABASE_KEY")
     
-    print(f"Connecting to: {database_url[:50]}...")
-    return psycopg2.connect(database_url, sslmode='require')
+    # 从 SUPABASE_URL 提取项目 ID
+    if 'supabase.co' in supabase_url:
+        project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
+        # 使用 Supabase 连接池 (pgbouncer) - 端口 6543
+        database_url = f'postgresql://postgres.{project_id}:{supabase_key}@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require'
+    else:
+        raise Exception("Invalid SUPABASE_URL")
+    
+    print(f"Connecting to Supabase pooler...")
+    return psycopg2.connect(database_url)
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
