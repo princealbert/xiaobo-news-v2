@@ -15,7 +15,7 @@ from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 
 def get_db_connection():
-    """获取数据库连接（使用 Supabase 连接池）"""
+    """获取数据库连接（使用 Supabase 直连）"""
     supabase_url = os.environ.get('SUPABASE_URL', '')
     supabase_key = os.environ.get('SUPABASE_KEY', '')
     
@@ -25,14 +25,13 @@ def get_db_connection():
     # 从 SUPABASE_URL 提取项目 ID
     if 'supabase.co' in supabase_url:
         project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
-        # 使用 Supabase 连接池 (pgbouncer) - 端口 6543
-        # 用户名格式：postgres.{project_id}
-        database_url = f'postgresql://postgres.{project_id}:{supabase_key}@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres'
+        # 使用 Supabase 直连 - 端口 5432，需要 SSL
+        database_url = f'postgresql://postgres:{supabase_key}@db.{project_id}.supabase.co:5432/postgres'
     else:
         raise Exception("Invalid SUPABASE_URL")
     
-    print(f"Connecting to Supabase pooler: {project_id}...")
-    return psycopg2.connect(database_url)
+    print(f"Connecting to Supabase direct: {project_id}...")
+    return psycopg2.connect(database_url, sslmode='require')
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
