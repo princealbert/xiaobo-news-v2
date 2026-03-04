@@ -1,5 +1,4 @@
 {
-  "buildCommand": "pip install -r requirements.txt && echo 'Dependencies installed'",
   "outputDirectory": "dist",
   "framework": null,
   "headers": [
