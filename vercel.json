@@ -1,6 +1,11 @@
 {
   "outputDirectory": "dist",
   "framework": null,
+  "functions": {
+    "api/**/*.py": {
+      "runtime": "@vercel/python"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
