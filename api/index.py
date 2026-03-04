@@ -24,11 +24,13 @@ def get_db_connection():
         
         if 'supabase.co' in supabase_url:
             project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
-            database_url = f'postgresql://postgres:{supabase_key}@db.{project_id}.supabase.co:5432/postgres'
+            # Supabase 需要 SSL 连接
+            database_url = f'postgresql://postgres:{supabase_key}@db.{project_id}.supabase.co:5432/postgres?sslmode=require'
         else:
             raise Exception("Missing DATABASE_URL or SUPABASE_URL")
     
-    return psycopg2.connect(database_url)
+    print(f"Connecting to: {database_url[:50]}...")
+    return psycopg2.connect(database_url, sslmode='require')
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
