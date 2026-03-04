@@ -10,6 +10,7 @@ import os
 import json
 import urllib.request
 import urllib.error
+import urllib.parse
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 
@@ -34,11 +35,11 @@ class handler(BaseHTTPRequestHandler):
             # 构建 Supabase REST API 请求
             offset = (page - 1) * limit
             
-            # 构建查询条件
-            api_url = f"{supabase_url}/rest/v1/articles?select=*&order=publish_date.desc&range={offset},{offset + limit - 1}"
-            
+            # 构建查询条件 - 使用正确的 Supabase REST API 格式
             if category and category != '全部':
-                api_url = f"{supabase_url}/rest/v1/articles?select=*&category=eq.{category}&order=publish_date.desc&range={offset},{offset + limit - 1}"
+                api_url = f"{supabase_url}/rest/v1/articles?select=*&category=eq.{urllib.parse.quote(category)}&order=publish_date.desc&limit={limit}&offset={offset}"
+            else:
+                api_url = f"{supabase_url}/rest/v1/articles?select=*&order=publish_date.desc&limit={limit}&offset={offset}"
             
             print(f"Requesting: {api_url[:80]}...")
             
@@ -60,6 +61,11 @@ class handler(BaseHTTPRequestHandler):
                 # 获取总数（从 Content-Range header）
                 content_range = response.headers.get('Content-Range', '')
                 total = int(content_range.split('/')[-1]) if '/' in content_range else len(articles)
+            
+            # 获取总数（从 Content-Range header 或单独查询）
+            # 简单处理：如果没有 header，就返回当前数量
+            if total == 0 and len(articles) > 0:
+                total = len(articles)  # 临时处理
             
             # 返回响应
             response_data = {
