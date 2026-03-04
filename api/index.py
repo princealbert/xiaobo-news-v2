@@ -26,11 +26,12 @@ def get_db_connection():
     if 'supabase.co' in supabase_url:
         project_id = supabase_url.replace('https://', '').replace('.supabase.co', '')
         # 使用 Supabase 连接池 (pgbouncer) - 端口 6543
-        database_url = f'postgresql://postgres.{project_id}:{supabase_key}@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require'
+        # 用户名格式：postgres.{project_id}
+        database_url = f'postgresql://postgres.{project_id}:{supabase_key}@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres'
     else:
         raise Exception("Invalid SUPABASE_URL")
     
-    print(f"Connecting to Supabase pooler...")
+    print(f"Connecting to Supabase pooler: {project_id}...")
     return psycopg2.connect(database_url)
 
 class handler(BaseHTTPRequestHandler):
