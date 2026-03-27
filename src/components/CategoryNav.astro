@@ -1,0 +1,136 @@
+---
+// 核心分类导航 - 映射到 RSS 原始分类
+const categories = [
+  { id: "all", name: "全部", icon: "📺" },
+  { id: "人工智能", name: "人工智能", icon: "🤖" },
+  { id: "具身智能", name: "具身智能", icon: "🦾" },
+  { id: "财经", name: "财经", icon: "📈" },
+  { id: "天津", name: "天津", icon: "🏭" },
+  { id: "创投", name: "创投", icon: "🚀" },
+];
+
+// 分类映射：核心分类 → RSS 原始分类
+const categoryMapping: Record<string, string[]> = {
+  "人工智能": ["AI 前沿", "AI 技术", "大模型", "ChatGPT", "AGI", "AI 应用", "AI 创业"],
+  "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],
+  "财经": ["财经科技", "金融科技", "财经新闻", "股市", "投资"],
+  "天津": ["天津", "天津新闻", "滨海新区", "天开园"],
+  "创投": ["创投科技", "创业投资", "融资", "IPO", "独角兽"],
+};
+---
+
+<div class="category-nav">
+  {categories.map(cat => (
+    <button class="category-btn" data-category={cat.id} title={`查看 ${cat.name} 的文章`}>
+      <span class="icon">{cat.icon}</span>
+      <span class="name">{cat.name}</span>
+    </button>
+  ))}
+</div>
+
+<script>
+  // 分类映射
+  const categoryMapping = {
+    "人工智能": ["AI 前沿", "AI 技术", "大模型", "ChatGPT", "AGI", "AI 应用", "AI 创业"],
+    "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],
+    "财经": ["财经科技", "金融科技", "财经新闻", "股市", "投资"],
+    "天津": ["天津", "天津新闻", "滨海新区", "天开园"],
+    "创投": ["创投科技", "创业投资", "融资", "IPO", "独角兽"],
+  };
+  
+  const buttons = document.querySelectorAll('.category-btn');
+  const articles = document.querySelectorAll('.article-card, .carousel-slide');
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const category = btn.getAttribute('data-category');
+      
+      articles.forEach(article => {
+        const articleCategory = article.getAttribute('data-category') || '';
+        
+        let visible = category === 'all';
+        
+        if (!visible && category && categoryMapping[category]) {
+          // 检查文章分类是否在映射列表中
+          visible = categoryMapping[category].some(cat => 
+            articleCategory.includes(cat)
+          );
+        }
+        
+        if (visible) {
+          article.style.display = 'block';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .category-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+  }
+  .category-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(0, 119, 182, 0.3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #2d3748;
+    box-shadow: 0 2px 4px rgba(0, 119, 182, 0.1);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .category-btn:hover {
+    background: rgba(0, 119, 182, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 119, 182, 0.15);
+  }
+  .category-btn.active {
+    background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(0, 119, 182, 0.3);
+  }
+  .category-btn[data-category="all"] {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  }
+  .category-btn[data-category="all"].active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+  .category-btn[data-category="天津"] {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  }
+  .category-btn[data-category="天津"].active {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+  }
+  .icon { font-size: 1rem; }
+  @media (max-width: 768px) {
+    .category-nav { gap: 0.4rem; padding: 0.5rem 0; }
+    .category-btn { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+    .icon { width: 14px; height: 14px; }
+  }
+  @media (max-width: 480px) {
+    .category-btn { padding: 0.35rem 0.5rem; font-size: 0.7rem; }
+    .name { display: none; }
+    .icon { width: 16px; height: 16px; }
+  }
+</style>

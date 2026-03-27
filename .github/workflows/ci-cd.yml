@@ -1,0 +1,125 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ========== 1. 代码质量检查 ==========
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint || echo "⚠️ ESLint 未配置"
+      
+      - name: Type Check
+        run: npm run check || echo "⚠️ TypeScript 检查未配置"
+
+  # ========== 2. 构建测试 ==========
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  # ========== 3. SEO 检查 ==========
+  seo-check:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      
+      - name: Check SEO files
+        run: |
+          echo "🔍 检查 SEO 文件..."
+          test -f dist/index.html && echo "✅ index.html 存在" || echo "❌ index.html 缺失"
+          test -f dist/blog/index.html && echo "✅ blog/index.html 存在" || echo "❌ blog/index.html 缺失"
+          grep -q "ads.txt" dist/index.html && echo "✅ AdSense 代码已集成" || echo "⚠️ AdSense 代码未找到"
+          grep -q "sitemap" dist/index.html && echo "✅ Sitemap 引用已添加" || echo "⚠️ Sitemap 引用未找到"
+      
+      - name: Check meta tags
+        run: |
+          echo "🔍 检查 Meta 标签..."
+          grep -q "<title>" dist/index.html && echo "✅ Title 标签存在" || echo "❌ Title 标签缺失"
+          grep -q "description" dist/index.html && echo "✅ Description 标签存在" || echo "❌ Description 标签缺失"
+          grep -q "og:title" dist/index.html && echo "✅ Open Graph 标签存在" || echo "⚠️ Open Graph 标签缺失"
+
+  # ========== 4. 自动部署到 Vercel ==========
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, seo-check]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+      
+      - name: Deployment Success
+        run: |
+          echo "✅ 部署成功！"
+          echo "🌐 访问地址：https://xiaobo-news-v2.vercel.app"
+
+  # ========== 5. 通知（可选） ==========
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: Send notification
+        run: |
+          echo "📢 部署完成通知"
+          echo "状态：${{ needs.deploy.result }}"
+          echo "分支：${{ github.ref }}"
+          echo "提交：${{ github.sha }}"

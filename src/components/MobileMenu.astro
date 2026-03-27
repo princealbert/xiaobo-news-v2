@@ -1,0 +1,103 @@
+---
+// 移动端汉堡菜单 - Astro 版本
+---
+<button id="mobileMenuBtn" class="menu-toggle" aria-label="Toggle menu">
+  <span class="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </span>
+</button>
+
+<div id="mobileMenu" class="mobile-menu" style="display: none;">
+  <nav>
+    <a href="/">🏠 首页</a>
+    <a href="/blog">📰 资讯</a>
+    <a href="/en">🌐 English</a>
+    <a href="/api/rss.xml">📡 RSS</a>
+  </nav>
+</div>
+
+<script>
+  const btn = document.getElementById('mobileMenuBtn');
+  const menu = document.getElementById('mobileMenu');
+  
+  btn?.addEventListener('click', () => {
+    const isOpen = menu?.style.display === 'block';
+    if (menu) {
+      menu.style.display = isOpen ? 'none' : 'block';
+    }
+    btn.classList.toggle('open');
+  });
+</script>
+
+<style>
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  .hamburger {
+    display: block;
+    width: 24px;
+    height: 18px;
+    position: relative;
+  }
+  .hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #333;
+    position: absolute;
+    transition: all 0.3s;
+  }
+  .hamburger span:nth-child(1) { top: 0; }
+  .hamburger span:nth-child(2) { top: 8px; }
+  .hamburger span:nth-child(3) { top: 16px; }
+  
+  .hamburger.open span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 8px;
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 8px;
+  }
+  
+  .mobile-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid #eaeaea;
+    padding: 1rem;
+    z-index: 100;
+  }
+  .mobile-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .mobile-menu a {
+    display: block;
+    padding: 0.75rem;
+    text-decoration: none;
+    color: #333;
+    border-radius: 8px;
+  }
+  .mobile-menu a:hover {
+    background: #f5f5f5;
+  }
+  
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+import { siteConfig } from '../config/site';
+import '../styles/global.css';
+import MobileMenu from '../components/MobileMenu.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title} | {siteConfig.name}</title>
+    <link rel="canonical" href={Astro.url} />
+    <meta name="keywords" content={siteConfig.keywords.join(', ')} />
+    <meta name="author" content={siteConfig.author} />
+    
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:image" content={image || siteConfig.ogImage} />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- AdSense 已移除：只在文章页加载，避免在 404/空页面展示广告 -->
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <header class="border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-900 z-50">
+      <nav class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="text-xl font-bold">{siteConfig.name}</a>
+          
+          <!-- 移动端汉堡菜单 -->
+          <MobileMenu  />
+          
+          <!-- 桌面端导航 -->
+          <div class="hidden md:flex gap-6">
+            <a href="/" class="hover:text-blue-600">首页</a>
+            <a href="/blog" class="hover:text-blue-600">资讯</a>
+            <a href="/en" class="hover:text-blue-600">English</a>
+          </div>
+        </div>
+        
+        <!-- 分类导航 -->
+        <CategoryNav  selected="all" onSelect={(id) => console.log('Selected:', id)} />
+      </nav>
+    </header>
+    
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <slot />
+    </main>
+    
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-16">
+      <div class="max-w-6xl mx-auto px-4 py-8 text-center text-sm text-gray-600 dark:text-gray-400">
+        <p>&copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+        <p class="mt-2">🦞 Powered by MollySpace</p>
+      </div>
+    </footer>
+  </body>
+</html>

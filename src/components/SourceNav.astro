@@ -1,0 +1,117 @@
+---
+// 信息源导航 - 主要RSS来源
+// 数据映射到 rss_sources_config_v5.json
+
+const sources = [
+  { id: "all", name: "全部", icon: "📺" },
+  // 中文 AI/科技
+  { id: "机器之心", name: "机器之心", icon: "🤖" },
+  { id: "量子位", name: "量子位", icon: "⚛️" },
+  { id: "虎嗅", name: "虎嗅", icon: "🐅" },
+  { id: "36 氪", name: "36 氪", icon: "💰" },
+  { id: "爱范儿", name: "爱范儿", icon: "📱" },
+  { id: "少数派", name: "少数派", icon: "⚡" },
+  // 金融财经
+  { id: "华尔街见闻", name: "华尔街见闻", icon: "📈" },
+  { id: "财联社", name: "财联社", icon: "🔔" },
+  { id: "东方财富", name: "东方财富", icon: "💹" },
+  // 开发者/技术
+  { id: "掘金", name: "掘金", icon: "⬢" },
+  { id: "开源中国", name: "开源中国", icon: "🔓" },
+  // 国际
+  { id: "TechCrunch", name: "TechCrunch", icon: "🌐" },
+  { id: "Ars Technica", name: "Ars Technica", icon: "🔬" },
+  { id: "MIT", name: "MIT", icon: "🎓" },
+];
+---
+
+<div class="source-nav">
+  {sources.map(source => (
+    <button class="source-btn" data-source={source.id} title={`查看 ${source.name} 的文章`}>
+      <span class="icon">{source.icon}</span>
+      <span class="name">{source.name}</span>
+    </button>
+  ))}
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.source-btn');
+  const articles = document.querySelectorAll('.article-card');
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const source = btn.getAttribute('data-source');
+      
+      articles.forEach(article => {
+        const articleSource = article.getAttribute('data-source') || '';
+        if (source === 'all' || articleSource === source || articleSource.includes(source)) {
+          article.style.display = 'block';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .source-nav {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(0, 119, 182, 0.1);
+    background: rgba(0, 119, 182, 0.03);
+  }
+  .source-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid rgba(0, 119, 182, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #4a5568;
+    box-shadow: 0 1px 3px rgba(0, 119, 182, 0.08);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .source-btn:hover {
+    background: rgba(0, 119, 182, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 119, 182, 0.12);
+  }
+  .source-btn.active {
+    background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 3px 10px rgba(0, 119, 182, 0.25);
+  }
+  .source-btn[data-source="all"] {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  }
+  .source-btn[data-source="all"].active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+  .icon { font-size: 0.875rem; }
+  @media (max-width: 768px) {
+    .source-nav { gap: 0.3rem; padding: 0.4rem 0; }
+    .source-btn { padding: 0.3rem 0.5rem; font-size: 0.7rem; }
+    .icon { width: 12px; height: 12px; }
+  }
+  @media (max-width: 480px) {
+    .source-btn { padding: 0.25rem 0.4rem; font-size: 0.65rem; }
+    .name { display: none; }
+    .icon { width: 14px; height: 14px; }
+  }
+</style>

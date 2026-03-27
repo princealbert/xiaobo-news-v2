@@ -1,0 +1,522 @@
+---
+import { siteConfig } from '../../config/site';
+import { getFeaturedArticles } from '../../lib/supabase';
+
+export const revalidate = 3600;
+const featuredPosts = await getFeaturedArticles(7);
+const topArticles = featuredPosts.slice(0, 3);
+const recommendedPosts = featuredPosts.slice(3, 7);
+
+function formatDate(dateString: string | null | undefined): string {
+  if (!dateString) return 'Latest';
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Latest';
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch {
+    return 'Latest';
+  }
+}
+
+function getCategoryGradient(category: string): string {
+  const gradients: Record<string, string> = {
+    'AI': 'linear-gradient(135deg, #0077b6 0%, #00b4d8 100%)',
+    '科技': 'linear-gradient(135deg, #48cae4 0%, #90e0ef 100%)',
+    '金融': 'linear-gradient(135deg, #0096c7 0%, #48cae4 100%)',
+    '财经': 'linear-gradient(135deg, #0077b6 0%, #00b4d8 100%)',
+    'Tech': 'linear-gradient(135deg, #48cae4 0%, #90e0ef 100%)',
+    'Finance': 'linear-gradient(135deg, #0096c7 0%, #48cae4 100%)',
+    '默认': 'linear-gradient(135deg, #0077b6 0%, #00b4d8 100%)'
+  };
+  for (const [key, gradient] of Object.entries(gradients)) {
+    if (category.includes(key)) return gradient;
+  }
+  return gradients['默认'];
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{siteConfig.name} - {siteConfig.description}</title>
+    <meta name="description" content={siteConfig.description} />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="alternate" hreflang="zh-CN" href="https://xiaobo-news-v2.vercel.app/" />
+    <link rel="alternate" hreflang="en" href="https://xiaobo-news-v2.vercel.app/en/" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: linear-gradient(135deg, #0077b6 0%, #00b4d8 50%, #48cae4 100%); min-height: 100vh; color: #1a202c; line-height: 1.6; }
+        .glass { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 8px 32px rgba(0, 119, 182, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); }
+        header { position: sticky; top: 0; z-index: 100; padding: 20px 0; transition: all 0.3s ease; }
+        header.scrolled { padding: 12px 0; background: rgba(255, 255, 255, 0.98); box-shadow: 0 4px 20px rgba(0, 119, 182, 0.12); }
+        .header-content { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: auto 1fr auto; gap: 32px; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; transition: transform 0.3s ease; }
+        .logo:hover { transform: translateY(-2px); }
+        .logo-img { width: 52px; height: 52px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); transition: all 0.3s ease; background: white; padding: 4px; }
+        .logo:hover .logo-img { box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4); transform: scale(1.05); }
+        .logo-text { font-size: 26px; font-weight: 900; background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.5px; }
+        .lang-switch { position: fixed; top: 24px; right: 24px; z-index: 300; }
+        .lang-btn { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 2px solid rgba(0, 119, 182, 0.3); padding: 10px 20px; border-radius: 25px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; color: #0077b6; text-decoration: none; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.2); }
+        .lang-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3); background: white; }
+        .search-container { max-width: 560px; }
+        .search-input { width: 100%; padding: 16px 56px 16px 28px; border: 2px solid rgba(0, 119, 182, 0.3); border-radius: 35px; font-size: 15px; background: rgba(255, 255, 255, 0.95); transition: all 0.3s ease; font-weight: 400; }
+        .search-input:focus { outline: none; border-color: #00b4d8; box-shadow: 0 0 0 5px rgba(0, 180, 216, 0.25); background: white; }
+        .search-input::placeholder { color: #94a3b8; }
+        nav { display: flex; align-items: center; gap: 28px; }
+        nav a { color: #2d3748; text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(135deg, #0077b6, #00b4d8); transition: width 0.3s ease; }
+        nav a:hover { color: #0077b6; }
+        nav a:hover::after { width: 100%; }
+        main { max-width: 1280px; margin: 0 auto; padding: 40px 24px; }
+        .carousel { position: relative; overflow: hidden; border-radius: 24px; height: 400px; margin-bottom: 40px; cursor: pointer; box-shadow: 0 20px 60px rgba(0, 119, 182, 0.2); }
+        .carousel-track { display: flex; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .carousel-slide { min-width: 100%; position: relative; background-size: cover; background-position: center; display: flex; align-items: center; padding: 48px; }
+        .carousel-slide::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,119,182,0.88), rgba(0,180,216,0.88)); z-index: 1; }
+        .carousel-content { color: white; max-width: 600px; z-index: 2; position: relative; }
+        .carousel-label { font-size: 14px; font-weight: 700; margin-bottom: 14px; opacity: 0.95; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .carousel-title { font-size: 32px; font-weight: 900; margin-bottom: 18px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .carousel-desc { font-size: 16px; opacity: 0.95; margin-bottom: 28px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .carousel-btn { background: white; color: #0077b6; border: none; padding: 15px 35px; border-radius: 35px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .carousel-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4); }
+        .carousel-nav { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; z-index: 10; }
+        .carousel-dot { width: 11px; height: 11px; border-radius: 6px; background: rgba(255, 255, 255, 0.5); cursor: pointer; transition: all 0.3s ease; }
+        .carousel-dot.active { background: white; width: 32px; border-radius: 6px; }
+        .main-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+        @media (min-width: 1024px) { .main-grid { grid-template-columns: 1fr 340px; align-items: start; } }
+        .content-section { min-width: 0; }
+        .articles-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+        .article-card { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(20px); border-radius: 20px; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; color: inherit; cursor: pointer; display: grid; grid-template-columns: 260px 1fr; border: 1px solid rgba(0, 119, 182, 0.1); height: 280px; }
+        .article-card:hover { transform: translateY(-10px); box-shadow: 0 25px 80px rgba(0, 119, 182, 0.2); border-color: rgba(0, 180, 216, 0.3); }
+        .article-image { height: 100%; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .article-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .article-card:hover .article-image img { transform: scale(1.1) rotate(1deg); }
+        .article-image-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.8); font-size: 52px; background: linear-gradient(135deg, #0077b6, #00b4d8); }
+        .category-badge { position: absolute; top: 14px; left: 14px; padding: 6px 15px; background: rgba(255, 255, 255, 0.98); color: #0077b6; border-radius: 18px; font-size: 12px; font-weight: 700; box-shadow: 0 2px 10px rgba(0,0,0,0.15); text-transform: uppercase; letter-spacing: 0.5px; }
+        .article-content { padding: 24px 28px; display: flex; flex-direction: column; }
+        .article-title { font-size: 20px; font-weight: 800; margin-bottom: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: color 0.3s ease; color: #1a202c; }
+        .article-card:hover .article-title { color: #0077b6; }
+        .article-summary { color: #4a5568; margin-bottom: 16px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; font-size: 15px; }
+        .article-meta { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #64748b; font-weight: 500; }
+        .article-date { display: flex; align-items: center; gap: 7px; }
+        .article-link { color: #0077b6; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: all 0.3s ease; font-size: 14px; }
+        .article-link:hover { color: #00b4d8; gap: 10px; }
+        .load-more-container { margin-top: 28px; text-align: center; }
+        .load-more-btn { background: linear-gradient(135deg, #0077b6, #00b4d8); color: white; border: none; padding: 16px 48px; border-radius: 30px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); display: inline-flex; align-items: center; gap: 10px; }
+        .load-more-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 119, 182, 0.5); }
+        .load-more-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .load-more-btn .spinner { animation: spin 1s linear infinite; }
+        .sidebar { display: flex; flex-direction: column; gap: 28px; }
+        .sidebar-section { background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(20px); border-radius: 20px; padding: 26px; border: 1px solid rgba(0, 119, 182, 0.1); }
+        .sidebar-section:first-child { height: 280px; display: flex; flex-direction: column; justify-content: flex-start; }
+        .sidebar-title { font-size: 19px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #0077b6; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: linear-gradient(135deg, #0077b6, #00b4d8); color: white; padding: 9px 18px; border-radius: 22px; font-size: 13px; cursor: pointer; transition: all 0.3s ease; display: inline-block; font-weight: 600; box-shadow: 0 2px 10px rgba(0, 119, 182, 0.3); }
+        .tag:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0, 119, 182, 0.5); }
+        .ad-slot { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border-radius: 18px; padding: 35px 24px; text-align: center; margin: 15px 0; transition: all 0.3s ease; border: 1px solid rgba(0, 119, 182, 0.15); }
+        .ad-slot:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0, 119, 182, 0.15); }
+        .ad-slot i { font-size: 44px; color: #0077b6; margin-bottom: 18px; }
+        .ad-slot p { color: #0c4a6e; font-size: 15px; font-weight: 700; }
+        .ad-slot small { color: #64748b; font-size: 12px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .stat-card { background: linear-gradient(135deg, #ffffff, #f0f9ff); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(0, 119, 182, 0.1); transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 119, 182, 0.15); }
+        .stat-number { font-size: 28px; font-weight: 900; background: linear-gradient(135deg, #0077b6, #00b4d8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { font-size: 13px; color: #64748b; margin-top: 6px; font-weight: 500; }
+        .recommended-list { display: flex; flex-direction: column; gap: 16px; }
+        .recommended-item { display: flex; gap: 14px; padding: 14px; background: linear-gradient(135deg, #ffffff, #f8fafc); border-radius: 14px; transition: all 0.3s ease; text-decoration: none; color: inherit; border: 1px solid rgba(0, 119, 182, 0.08); }
+        .recommended-item:hover { transform: translateX(-4px); box-shadow: 0 6px 20px rgba(0, 119, 182, 0.15); border-color: rgba(0, 180, 216, 0.2); }
+        .recommended-item-image { width: 72px; height: 72px; border-radius: 10px; background-size: cover; background-position: center; flex-shrink: 0; }
+        .recommended-item-content { flex: 1; min-width: 0; }
+        .recommended-item-title { font-size: 14px; font-weight: 700; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 6px; color: #1a202c; }
+        .recommended-item:hover .recommended-item-title { color: #0077b6; }
+        .recommended-item-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #64748b; }
+        .recommended-badge { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+        .social-links { display: flex; justify-content: center; gap: 14px; margin-top: 20px; }
+        .social-link { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #0077b6, #00b4d8); display: flex; align-items: center; justify-content: center; color: white; font-size: 19px; transition: all 0.3s ease; text-decoration: none; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); }
+        .social-link:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 8px 25px rgba(0, 119, 182, 0.5); }
+        footer { margin-top: 40px; padding: 48px 0; }
+        .footer-content { max-width: 1280px; margin: 0 auto; padding: 0 24px; text-align: center; color: #475569; }
+        .footer-links { display: flex; justify-content: center; gap: 36px; margin-bottom: 28px; flex-wrap: wrap; }
+        .footer-links a { color: #0077b6; text-decoration: none; transition: all 0.3s ease; font-weight: 500; }
+        .footer-links a:hover { color: #00b4d8; transform: translateY(-2px); }
+        .refresh-indicator { position: fixed; top: 24px; right: 24px; background: rgba(255, 255, 255, 0.95); padding: 10px 20px; border-radius: 25px; font-size: 13px; color: #0077b6; display: none; align-items: center; gap: 10px; z-index: 200; box-shadow: 0 4px 20px rgba(0, 119, 182, 0.25); font-weight: 600; }
+        .refresh-indicator.active { display: flex; }
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @media (max-width: 768px) { .header-content { grid-template-columns: auto 1fr; gap: 16px; } .search-container { display: none; } nav { gap: 16px; } nav a { font-size: 14px; } .carousel { height: 280px; border-radius: 16px; } .carousel-slide { padding: 28px; } .carousel-title { font-size: 22px; } .carousel-desc { font-size: 14px; } .article-card { grid-template-columns: 1fr; height: auto; } .article-image { min-height: 220px; } .main-grid { gap: 28px; } .sidebar-section:first-child { height: auto; } }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <a href="/" class="lang-btn">
+            <i class="fas fa-language"></i>
+            <span>中文</span>
+        </a>
+    </div>
+
+    <div class="refresh-indicator" id="refreshIndicator">
+        <i class="fas fa-spinner spinner"></i>
+        <span>Updating...</span>
+    </div>
+
+    <header class="glass" id="header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <img src="/logo.png" alt="Logo" class="logo-img" />
+                <span class="logo-text">XiaoboAI News</span>
+            </a>
+            <div class="search-container">
+                <div style="position: relative;">
+                    <input type="text" class="search-input" placeholder="Search AI, Tech, Finance News..." />
+                    <i class="fas fa-search" style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 18px;"></i>
+                </div>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/blog">News</a>
+                <a href="/about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="carousel glass">
+            <div class="carousel-track" id="carouselTrack">
+                {topArticles.map((article) => {
+                    const gradient = getCategoryGradient(article.category);
+                    return (
+                        <div class="carousel-slide" onclick="window.open('{article.link}', '_blank')" style={article.image_url ? `background-image: url('${article.image_url}')` : `background: ${gradient}`}>
+                            <div class="carousel-content">
+                                <div class="carousel-label"><i class="fas fa-star"></i> Featured</div>
+                                <h2 class="carousel-title">{article.title}</h2>
+                                <p class="carousel-desc">{article.summary}</p>
+                                <button class="carousel-btn" onclick="event.stopPropagation(); window.open('{article.link}', '_blank')">Read More <i class="fas fa-arrow-right" style="margin-left: 8px"></i></button>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+            <div class="carousel-nav" id="carouselNav"></div>
+        </section>
+
+        <div class="main-grid">
+            <div class="content-section">
+                <div class="articles-grid" id="articlesGrid">
+                    {featuredPosts.map((post) => {
+                        const gradient = getCategoryGradient(post.category);
+                        return (
+                            <a href={post.link || '#'} class="article-card" target="_blank" rel="noopener noreferrer">
+                                <div class="article-image" style={post.image_url ? `background-image: url('${post.image_url}')` : `background: ${gradient}`}>
+                                    {post.image_url ? (
+                                        <img src={post.image_url} alt={post.title} loading="lazy" />
+                                    ) : (
+                                        <div class="article-image-placeholder"><i class="fas fa-newspaper"></i></div>
+                                    )}
+                                    <span class="category-badge">{post.category}</span>
+                                </div>
+                                <div class="article-content">
+                                    <h3 class="article-title">{post.title}</h3>
+                                    <p class="article-summary">{post.summary}</p>
+                                    <div class="article-meta">
+                                        <time class="article-date">
+                                            <i class="far fa-calendar"></i>
+                                            {formatDate(post.publish_date)}
+                                        </time>
+                                        <span class="article-link">Read More <i class="fas fa-external-link-alt" style="font-size: 13px"></i></span>
+                                    </div>
+                                </div>
+                            </a>
+                        );
+                    })}
+                </div>
+                
+                <div class="load-more-container">
+                    <button class="load-more-btn" id="loadMoreBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>Load More</span>
+                    </button>
+                </div>
+                
+                <div style="margin-top: 28px;">
+                    <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title"><i class="fas fa-tags"></i> Categories</div>
+                    <div class="tag-cloud">
+                        <span class="tag">🤖 AI</span>
+                        <span class="tag">💻 Tech</span>
+                        <span class="tag">💰 Finance</span>
+                        <span class="tag">📈 Trading</span>
+                        <span class="tag">🌍 Business</span>
+                        <span class="tag">🔬 Innovation</span>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-title"><i class="fas fa-ad"></i> Advertising</div>
+                    <div class="ad-slot"><i class="fas fa-bullhorn"></i><p><strong>Ad Space Available</strong></p><small>High Traffic · Great ROI</small></div>
+                    <div class="ad-slot"><i class="fas fa-chart-line"></i><p><strong>AdSense</strong></p><small>Review Pending...</small></div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-title"><i class="fas fa-chart-bar"></i> Statistics</div>
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-number">1,015</div><div class="stat-label">Articles</div></div>
+                        <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Categories</div></div>
+                        <div class="stat-card"><div class="stat-number">12</div><div class="stat-label">RSS Feeds</div></div>
+                        <div class="stat-card"><div class="stat-number">99.9%</div><div class="stat-label">Uptime</div></div>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-title"><i class="fas fa-thumbs-up"></i> 🎯 Recommended</div>
+                    <div class="recommended-list">
+                        {recommendedPosts.map((post, index) => {
+                            const gradient = getCategoryGradient(post.category);
+                            return (
+                                <a href={post.link || '#'} class="recommended-item" target="_blank" rel="noopener noreferrer">
+                                    <div class="recommended-item-image" style={post.image_url ? `background-image: url('${post.image_url}')` : `background: ${gradient}`}></div>
+                                    <div class="recommended-item-content">
+                                        <h4 class="recommended-item-title">{post.title}</h4>
+                                        <div class="recommended-item-meta">
+                                            {index < 2 && <span class="recommended-badge">HOT</span>}
+                                            <span><i class="far fa-calendar"></i> {formatDate(post.publish_date)}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            );
+                        })}
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="glass">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/advertise">Advertise</a>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link" title="WeChat"><i class="fab fa-weixin"></i></a>
+                <a href="#" class="social-link" title="Weibo"><i class="fab fa-weibo"></i></a>
+                <a href="#" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p style="margin-top: 24px; font-size: 14px;">&copy; {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const track = document.getElementById('carouselTrack');
+        const nav = document.getElementById('carouselNav');
+        const slides = track.children.length;
+        let currentSlide = 0;
+        
+        for (let i = 0; i < slides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(i);
+            nav.appendChild(dot);
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+            nav.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+        
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides;
+            goToSlide(currentSlide);
+        }, 5000);
+        
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // ========== Load More Functionality ==========
+        const SUPABASE_URL = 'https://vmrzypjvjhivzlwjsdug.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtcnp5cGp2amhpdnpsd2pzZHVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjE2MTIsImV4cCI6MjA4Nzk5NzYxMn0.XzYUZYrAXnVzULbmV6vnZ-IQTH3EKtxDYV-ka9jfpSg';
+        
+        let offset = 7;
+        const limit = 7;
+        let isLoading = false;
+        let hasMore = true;
+        
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const articlesGrid = document.getElementById('articlesGrid');
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'Latest';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return 'Latest';
+                const now = new Date();
+                const diffMs = now.getTime() - date.getTime();
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                if (diffDays === 0) return 'Today';
+                if (diffDays === 1) return 'Yesterday';
+                if (diffDays < 7) return `${diffDays}d ago`;
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            } catch {
+                return 'Latest';
+            }
+        }
+        
+        function getCategoryGradient(category) {
+            const gradients = {
+                'AI': 'linear-gradient(135deg, #0077b6 0%, #00b4d8 100%)',
+                '科技': 'linear-gradient(135deg, #48cae4 0%, #90e0ef 100%)',
+                '金融': 'linear-gradient(135deg, #0096c7 0%, #48cae4 100%)',
+                '财经': 'linear-gradient(135deg, #0077b6 0%, #00b4d8 100%)',
+                'Tech': 'linear-gradient(135deg, #48cae4 0%, #90e0ef 100%)',
+                'Finance': 'linear-gradient(135deg, #0096c7 0%, #48cae4 100%)',
+                '默认': 'linear-gradient(135deg, #0077b6 0%, #00b4d8 100%)'
+            };
+            for (const [key, gradient] of Object.entries(gradients)) {
+                if (category.includes(key)) return gradient;
+            }
+            return gradients['默认'];
+        }
+        
+        function createArticleCard(article) {
+            const gradient = getCategoryGradient(article.category);
+            const hasImage = article.image_url && article.image_url.trim() !== '';
+            
+            const card = document.createElement('a');
+            card.href = article.link || '#';
+            card.className = 'article-card';
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+            
+            card.innerHTML = `
+                <div class="article-image" style="${hasImage ? `background-image: url('${article.image_url}')` : `background: ${gradient}`}">
+                    ${hasImage ? `<img src="${article.image_url}" alt="${article.title}" loading="lazy" />` : `<div class="article-image-placeholder"><i class="fas fa-newspaper"></i></div>`}
+                    <span class="category-badge">${article.category}</span>
+                </div>
+                <div class="article-content">
+                    <h3 class="article-title">${article.title}</h3>
+                    <p class="article-summary">${article.summary}</p>
+                    <div class="article-meta">
+                        <time class="article-date"><i class="far fa-calendar"></i>${formatDate(article.publish_date)}</time>
+                        <span class="article-link">Read More <i class="fas fa-external-link-alt" style="font-size: 13px"></i></span>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        async function loadMoreArticles() {
+            if (isLoading || !hasMore) return;
+            
+            isLoading = true;
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.innerHTML = '<i class="fas fa-spinner spinner"></i><span>Loading...</span>';
+            
+            try {
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/articles?select=*&order=publish_date.desc&range=${offset}-${offset + limit - 1}`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`,
+                            'Range-Unit': 'items'
+                        }
+                    }
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const articles = await response.json();
+                
+                console.log('Loaded:', articles.length, 'articles');
+                
+                if (articles && articles.length > 0) {
+                    articles.forEach(article => {
+                        const card = createArticleCard(article);
+                        articlesGrid.appendChild(card);
+                    });
+                    
+                    offset += articles.length;
+                    
+                    if (articles.length < limit) {
+                        hasMore = false;
+                        loadMoreBtn.style.display = 'none';
+                    } else {
+                        isLoading = false;
+                        loadMoreBtn.disabled = false;
+                        loadMoreBtn.innerHTML = '<i class="fas fa-plus"></i><span>Load More</span>';
+                    }
+                } else {
+                    hasMore = false;
+                    loadMoreBtn.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Load failed:', error);
+                isLoading = false;
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.innerHTML = '<i class="fas fa-plus"></i><span>Load More</span>';
+            }
+        }
+        
+        loadMoreBtn.addEventListener('click', loadMoreArticles);
+        
+        // ========== Auto Refresh ==========
+        const REFRESH_INTERVAL = 5 * 60 * 1000;
+        
+        async function fetchLatestArticles() {
+            const indicator = document.getElementById('refreshIndicator');
+            try {
+                indicator?.classList.add('active');
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/articles?select=*&order=publish_date.desc&limit=6`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                const articles = await response.json();
+                console.log('✅ Articles updated');
+            } catch (error) {
+                console.error('❌ Auto-update failed:', error);
+            } finally {
+                setTimeout(() => indicator?.classList.remove('active'), 1000);
+            }
+        }
+        
+        console.log('🔄 Auto-refresh enabled (every 5 minutes)');
+        setInterval(fetchLatestArticles, REFRESH_INTERVAL);
+        
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                fetchLatestArticles();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<BaseLayout title="关于我们" description={siteConfig.description}>
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold mb-8 text-center">关于我们</h1>
+    
+    <div class="prose prose-blue dark:prose-invert max-w-none">
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">🦞 茉莉空间</h2>
+        <p class="mb-4">
+          茉莉空间是一个由 AI 驱动的智能资讯平台，致力于为你提供最前沿的 AI、科技、金融和创业领域的深度内容。
+        </p>
+        <p class="mb-4">
+          我们相信，信息的价值不在于数量，而在于质量。每一篇文章都经过精心筛选和深度加工，确保为你带来真正的洞察和启发。
+        </p>
+      </section>
+      
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">🎯 我们的使命</h2>
+        <ul class="space-y-3">
+          <li class="flex items-start gap-3">
+            <span class="text-blue-600 mt-1">✓</span>
+            <span>提供高质量、有深度的原创内容</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-600 mt-1">✓</span>
+            <span>帮助你把握 AI 时代的机遇</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-600 mt-1">✓</span>
+            <span>用技术提升信息获取效率</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="text-blue-600 mt-1">✓</span>
+            <span>建立 AI 与人类协作的内容创作新模式</span>
+          </li>
+        </ul>
+      </section>
+      
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">👨‍💻 创始人</h2>
+        <div class="flex items-center gap-6 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white text-2xl font-bold">
+            晓
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">王晓波 (Albert)</h3>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">AI 超级个体创业者</p>
+            <p class="mt-3 text-sm">
+              前银行从业者，现专注于 AI 技术应用和个人创业系统建设。相信 AI 将重塑内容创作和信息传播的方式。
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">🤖 AI 协作团队</h2>
+        <p class="mb-4">
+          茉莉内容由 AI 团队协同创作，包括：
+        </p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <h4 class="font-semibold mb-2">🧠 内容策划</h4>
+            <p class="text-sm">AI 分析热点，策划选题</p>
+          </div>
+          <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <h4 class="font-semibold mb-2">✍️ 内容创作</h4>
+            <p class="text-sm">AI 撰写初稿，人工润色</p>
+          </div>
+          <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+            <h4 class="font-semibold mb-2">🎨 视觉设计</h4>
+            <p class="text-sm">AI 生成配图，专业审美</p>
+          </div>
+        </div>
+      </section>
+      
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4">📬 联系我们</h2>
+        <p class="mb-4">
+          有任何问题、建议或合作意向？欢迎联系我们：
+        </p>
+        <ul class="space-y-2">
+          <li class="flex items-center gap-3">
+            <span class="text-blue-600">📧</span>
+            <a href="mailto:contact@mollyspace.ai" class="text-blue-600 hover:underline">contact@mollyspace.ai</a>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="text-blue-600">🐦</span>
+            <a href="https://twitter.com/mollyspace" class="text-blue-600 hover:underline">@mollyspace</a>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="text-blue-600">💬</span>
+            <a href="https://discord.gg/mollyspace" class="text-blue-600 hover:underline">Discord 社区</a>
+          </li>
+        </ul>
+      </section>
+      
+      <section class="p-6 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white">
+        <h2 class="text-2xl font-semibold mb-4">🚀 加入我们</h2>
+        <p class="mb-4">
+          如果你对 AI、内容创作或技术创新充满热情，欢迎加入我们的团队！
+        </p>
+        <a href="/contact" class="inline-block bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+          查看职位 →
+        </a>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

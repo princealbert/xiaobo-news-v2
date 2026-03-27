@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<BaseLayout title="联系我们" description="联系茉莉空间团队">
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold mb-8 text-center">联系我们</h1>
+    
+    <div class="prose prose-blue dark:prose-invert max-w-none">
+      <section class="mb-12">
+        <p class="text-lg text-center mb-8">
+          有任何问题、建议或合作意向？我们很乐意听到你的声音！
+        </p>
+      </section>
+      
+      <section class="grid md:grid-cols-2 gap-8 mb-12">
+        <div class="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+          <h2 class="text-2xl font-semibold mb-4">📧 一般咨询</h2>
+          <p class="mb-4">网站使用、内容问题、一般咨询</p>
+          <a href="mailto:contact@mollyspace.ai" class="text-blue-600 hover:underline text-lg">
+            contact@mollyspace.ai
+          </a>
+        </div>
+        
+        <div class="p-6 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <h2 class="text-2xl font-semibold mb-4">🤝 商务合作</h2>
+          <p class="mb-4">广告合作、内容授权、战略合作</p>
+          <a href="mailto:business@mollyspace.ai" class="text-blue-600 hover:underline text-lg">
+            business@mollyspace.ai
+          </a>
+        </div>
+        
+        <div class="p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+          <h2 class="text-2xl font-semibold mb-4">🔧 技术支持</h2>
+          <p class="mb-4">网站故障、功能建议、技术问题</p>
+          <a href="mailto:support@mollyspace.ai" class="text-blue-600 hover:underline text-lg">
+            support@mollyspace.ai
+          </a>
+        </div>
+        
+        <div class="p-6 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+          <h2 class="text-2xl font-semibold mb-4">📰 媒体联系</h2>
+          <p class="mb-4">媒体采访、新闻稿、报道请求</p>
+          <a href="mailto:press@mollyspace.ai" class="text-blue-600 hover:underline text-lg">
+            press@mollyspace.ai
+          </a>
+        </div>
+      </section>
+      
+      <section class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6">🌐 社交媒体</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <a href="https://twitter.com/mollyspace" class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg hover:shadow-lg transition text-center">
+            <div class="text-3xl mb-3">🐦</div>
+            <h3 class="font-semibold mb-2">Twitter</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">@mollyspace</p>
+          </a>
+          
+          <a href="https://discord.gg/mollyspace" class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg hover:shadow-lg transition text-center">
+            <div class="text-3xl mb-3">💬</div>
+            <h3 class="font-semibold mb-2">Discord</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">加入社区</p>
+          </a>
+          
+          <a href="https://github.com/mollyspace" class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg hover:shadow-lg transition text-center">
+            <div class="text-3xl mb-3">🐙</div>
+            <h3 class="font-semibold mb-2">GitHub</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">开源项目</p>
+          </a>
+        </div>
+      </section>
+      
+      <section class="p-8 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg text-white text-center">
+        <h2 class="text-2xl font-semibold mb-4">🚀 期待与你合作</h2>
+        <p class="mb-6">
+          无论你是读者、创作者还是合作伙伴，我们都欢迎你的加入！
+        </p>
+        <a href="mailto:contact@mollyspace.ai" class="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition">
+          发送邮件 →
+        </a>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

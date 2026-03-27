@@ -1,0 +1,373 @@
+---
+import { siteConfig } from '../../config/site';
+import { getArticleById, getAllArticleIds } from '../../lib/supabase';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const ids = await getAllArticleIds();
+  return ids.map(id => ({ params: { id: id.toString() } }));
+}
+
+const { id } = Astro.params;
+const articleId = id ? parseInt(id, 10) : 0;
+const article = await getArticleById(articleId);
+
+if (!article) {
+  return Astro.redirect('/blog');
+}
+
+function stripHtml(html: string): string {
+  if (!html) return '';
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+}
+
+function formatDate(dateString: string | null | undefined): string {
+  if (!dateString) return '最新发布';
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '最新发布';
+    return date.toLocaleDateString('zh-CN', { 
+      year: 'numeric',
+      month: 'long', 
+      day: 'numeric' 
+    });
+  } catch {
+    return '最新发布';
+  }
+}
+
+const plainSummary = stripHtml(article.summary || '');
+const plainContent = stripHtml(article.content || '');
+const displayContent = plainContent || plainSummary;
+---
+
+<BaseLayout 
+  title={`${article.title} - ${siteConfig.name}`}
+  description={plainSummary || siteConfig.description}
+  lang="zh"
+>
+  <div class="article-container">
+    <article class="article-card">
+      <header class="article-header">
+        <div class="article-meta">
+          <span class="article-category">{article.category}</span>
+          <span class="article-date">
+            <i class="far fa-calendar-alt"></i>
+            {formatDate(article.publish_date)}
+          </span>
+        </div>
+        <h1 class="article-title">{article.title}</h1>
+        {article.author && (
+          <div class="article-author">
+            <i class="far fa-user"></i>
+            <span>{article.author}</span>
+          </div>
+        )}
+      </header>
+
+      {article.image_url && (
+        <div class="article-image-wrapper">
+          <img src={article.image_url} alt={article.title} class="article-image" />
+        </div>
+      )}
+
+      <div class="article-content">
+        {displayContent ? (
+          <p>{displayContent}</p>
+        ) : (
+          <p class="no-content">暂无详细内容</p>
+        )}
+      </div>
+
+      <div class="article-actions">
+        <a href={article.link} target="_blank" rel="noopener noreferrer" class="read-original-btn">
+          <i class="fas fa-external-link-alt"></i>
+          阅读原文
+        </a>
+        <a href="/blog" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+          返回资讯列表
+        </a>
+      </div>
+    </article>
+
+    <aside class="article-sidebar">
+      <div class="sidebar-section">
+        <h3><i class="fas fa-info-circle"></i> 文章信息</h3>
+        <ul class="info-list">
+          <li><strong>分类：</strong>{article.category}</li>
+          <li><strong>发布日期：</strong>{formatDate(article.publish_date)}</li>
+          {article.author && <li><strong>来源：</strong>{article.author}</li>}
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3><i class="fas fa-share-alt"></i> 分享</h3>
+        <div class="share-buttons">
+          <button class="share-btn weibo" onclick={`window.open('https://service.weibo.com/share/share.php?url=${encodeURIComponent(Astro.url.href)}&title=${encodeURIComponent(article.title)}', '_blank')`}>
+            <i class="fab fa-weibo"></i>
+          </button>
+          <button class="share-btn twitter" onclick={`window.open('https://twitter.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(article.title)}', '_blank')`}>
+            <i class="fab fa-twitter"></i>
+          </button>
+          <button class="share-btn copy" onclick="navigator.clipboard.writeText(window.location.href); alert('链接已复制')">
+            <i class="fas fa-link"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .article-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+
+  @media (max-width: 900px) {
+    .article-container {
+      grid-template-columns: 1fr;
+      padding: 24px 16px;
+    }
+  }
+
+  .article-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 119, 182, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  @media (max-width: 600px) {
+    .article-card {
+      padding: 24px;
+    }
+  }
+
+  .article-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(0, 119, 182, 0.1);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .article-category {
+    background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .article-date {
+    color: #64748b;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .article-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .article-title {
+      font-size: 24px;
+    }
+  }
+
+  .article-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .article-image-wrapper {
+    margin: 24px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .article-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .article-content {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #334155;
+  }
+
+  .article-content p {
+    margin-bottom: 20px;
+  }
+
+  .no-content {
+    color: #94a3b8;
+    font-style: italic;
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .article-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(0, 119, 182, 0.1);
+    flex-wrap: wrap;
+  }
+
+  .read-original-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 119, 182, 0.3);
+  }
+
+  .read-original-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 119, 182, 0.08);
+    color: #0077b6;
+    padding: 14px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+  }
+
+  .back-btn:hover {
+    background: rgba(0, 119, 182, 0.15);
+  }
+
+  /* Sidebar */
+  .article-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .sidebar-section {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 119, 182, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .sidebar-section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sidebar-section h3 i {
+    color: #0077b6;
+  }
+
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .info-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 119, 182, 0.08);
+    font-size: 14px;
+    color: #475569;
+  }
+
+  .info-list li:last-child {
+    border-bottom: none;
+  }
+
+  .info-list strong {
+    color: #1e293b;
+    margin-right: 8px;
+  }
+
+  .share-buttons {
+    display: flex;
+    gap: 12px;
+  }
+
+  .share-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+
+  .share-btn.weibo {
+    background: #e6162d;
+    color: white;
+  }
+
+  .share-btn.twitter {
+    background: #1da1f2;
+    color: white;
+  }
+
+  .share-btn.copy {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+
+  .share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+</style>

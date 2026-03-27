@@ -1,0 +1,78 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  author?: string;
+  image?: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, author = "晓波", image, tags = [] } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- 只在文章页加载 AdSense -->
+  {siteConfig.adsense.enable && (
+    <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsense.publisher}`} crossorigin="anonymous" />
+  )}
+  
+  <article class="prose prose-blue dark:prose-invert max-w-4xl mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-4">{title}</h1>
+      <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <time datetime={pubDate.toISOString()}>
+          {pubDate.toLocaleDateString('zh-CN', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </time>
+        <span>·</span>
+        <span>{author}</span>
+      </div>
+      {tags.length > 0 && (
+        <div class="flex gap-2 mt-4">
+          {tags.map((tag) => (
+            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+    
+    {image && (
+      <img 
+        src={image} 
+        alt={title} 
+        class="w-full h-auto rounded-lg shadow-lg mb-8"
+        loading="lazy"
+      />
+    )}
+    
+    <div class="content">
+      <slot />
+    </div>
+    
+    <!-- AdSense 广告位：文章底部（只在启用时显示） -->
+    {siteConfig.adsense.enable && (
+      <div class="mt-12 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <ins class="adsbygoogle"
+          style={{ display: 'block', textAlign: 'center' }}
+          data-ad-layout="in-article"
+          data-ad-format="fluid"
+          data-ad-client={siteConfig.adsense.publisher}
+          data-ad-slot={siteConfig.adsense.slot}
+        />
+        <script>
+          {(globalThis as any).adsbygoogle = (globalThis as any).adsbygoogle || [];
+          (globalThis as any).adsbygoogle.push({});}
+        </script>
+      </div>
+    )}
+  </article>
+</BaseLayout>

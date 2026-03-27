@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// TODO: 从内容集合加载真实文章
+const posts = [
+  {
+    title: "AI Agent 自主进化：从被动响应到主动预判",
+    description: "深度解析 AI Agent 的自主进化机制",
+    pubDate: new Date("2026-03-16"),
+    slug: "/blog/ai-agent-evolution",
+    category: "AI 前沿"
+  }
+];
+---
+
+<BaseLayout title="全部资讯" description="AI 前沿、科技产业、金融科技深度资讯">
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <h1 class="text-4xl font-bold mb-8">全部资讯</h1>
+    <p class="text-gray-600 dark:text-gray-400 mb-8">
+      内容迁移中... 即将上线 1500+ 篇深度资讯
+    </p>
+    <div class="space-y-8">
+      {posts.map((post) => (
+        <article class="border-b border-gray-200 dark:border-gray-800 pb-8">
+          <div class="flex items-center gap-4 text-sm text-gray-500 mb-2">
+            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full">
+              {post.category}
+            </span>
+            <time>
+              {post.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </time>
+          </div>
+          <h2 class="text-2xl font-bold mb-3">
+            <a href={post.slug} class="hover:text-blue-600 transition">
+              {post.title}
+            </a>
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">
+            {post.description}
+          </p>
+          <a href={post.slug} class="text-blue-600 hover:underline">
+            阅读全文 →
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
