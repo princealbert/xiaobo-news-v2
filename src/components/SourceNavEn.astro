@@ -34,26 +34,49 @@ const sources = [
 </nav>
 
 <script>
-  const buttons = document.querySelectorAll('.source-link');
-  const articles = document.querySelectorAll('.article-card');
-  
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      const source = btn.getAttribute('data-source');
-      
-      articles.forEach(article => {
-        const articleSource = article.getAttribute('data-source') || '';
-        if (source === 'all' || articleSource === source || articleSource.includes(source)) {
-          article.style.display = 'block';
-        } else {
-          article.style.display = 'none';
-        }
+  function initSourceNav() {
+    const buttons = document.querySelectorAll('.source-link');
+    const articles = document.querySelectorAll('.article-card');
+    
+    if (buttons.length === 0) return;
+    
+    // 默认选中"全部"
+    const allBtn = document.querySelector('.source-link[data-source="all"]');
+    if (allBtn) allBtn.classList.add('active');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // 更新按钮状态
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const source = btn.getAttribute('data-source');
+        if (!source) return;
+        
+        // 过滤文章
+        articles.forEach(article => {
+          const articleSource = article.getAttribute('data-source') || '';
+          
+          const visible = source === 'all' || 
+                         articleSource === source || 
+                         articleSource.includes(source);
+          
+          if (visible) {
+            (article as HTMLElement).style.display = '';
+          } else {
+            (article as HTMLElement).style.display = 'none';
+          }
+        });
       });
     });
-  });
+  }
+  
+  // 页面加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSourceNav);
+  } else {
+    initSourceNav();
+  }
 </script>
 
 <style>

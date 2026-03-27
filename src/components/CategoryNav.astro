@@ -31,7 +31,7 @@ const categoryMapping: Record<string, string[]> = {
 
 <script>
   // 分类映射
-  const categoryMapping = {
+  const categoryMapping: Record<string, string[]> = {
     "人工智能": ["AI 前沿", "AI 技术", "大模型", "ChatGPT", "AGI", "AI 应用", "AI 创业"],
     "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],
     "财经": ["财经科技", "金融科技", "财经新闻", "股市", "投资"],
@@ -39,35 +39,53 @@ const categoryMapping: Record<string, string[]> = {
     "创投": ["创投科技", "创业投资", "融资", "IPO", "独角兽"],
   };
   
-  const buttons = document.querySelectorAll('.category-link');
-  const articles = document.querySelectorAll('.article-card, .carousel-slide');
-  
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      const category = btn.getAttribute('data-category');
-      
-      articles.forEach(article => {
-        const articleCategory = article.getAttribute('data-category') || '';
+  function initCategoryNav() {
+    const buttons = document.querySelectorAll('.category-link');
+    const articles = document.querySelectorAll('.article-card, .carousel-slide');
+    
+    if (buttons.length === 0) return;
+    
+    // 默认选中"全部"
+    const allBtn = document.querySelector('.category-link[data-category="all"]');
+    if (allBtn) allBtn.classList.add('active');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // 更新按钮状态
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
         
-        let visible = category === 'all';
+        const category = btn.getAttribute('data-category');
+        if (!category) return;
         
-        if (!visible && category && categoryMapping[category]) {
-          visible = categoryMapping[category].some(cat => 
-            articleCategory.includes(cat)
-          );
-        }
-        
-        if (visible) {
-          article.style.display = 'block';
-        } else {
-          article.style.display = 'none';
-        }
+        // 过滤文章
+        articles.forEach(article => {
+          const articleCategory = article.getAttribute('data-category') || '';
+          
+          let visible = category === 'all';
+          
+          if (!visible && categoryMapping[category]) {
+            visible = categoryMapping[category].some(cat => 
+              articleCategory.includes(cat)
+            );
+          }
+          
+          if (visible) {
+            (article as HTMLElement).style.display = '';
+          } else {
+            (article as HTMLElement).style.display = 'none';
+          }
+        });
       });
     });
-  });
+  }
+  
+  // 页面加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCategoryNav);
+  } else {
+    initCategoryNav();
+  }
 </script>
 
 <style>
