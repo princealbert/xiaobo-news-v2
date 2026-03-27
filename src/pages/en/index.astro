@@ -165,7 +165,10 @@ function getCategoryGradient(category: string): string {
         .refresh-indicator.active { display: flex; }
         .spinner { animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @media (max-width: 768px) { .header-content { grid-template-columns: auto 1fr; gap: 16px; } .search-container { display: none; } nav { gap: 16px; } nav a { font-size: 14px; } .carousel { height: 280px; border-radius: 16px; } .carousel-slide { padding: 28px; } .carousel-title { font-size: 22px; } .carousel-desc { font-size: 14px; } .article-card { grid-template-columns: 1fr; height: auto; } .article-image { min-height: 220px; } .main-grid { gap: 28px; } .sidebar-section:first-child { height: auto; } }
+        .lang-switch { display: flex; align-items: center; }
+        .lang-btn { padding: 6px 12px; border: 1px solid rgba(0,119,182,0.3); border-radius: 16px; background: rgba(255,255,255,0.8); color: #0077b6; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s; }
+        .lang-btn:hover { background: #0077b6; color: white; border-color: #0077b6; }
+        @media (max-width: 768px) { .header-content { grid-template-columns: auto 1fr; gap: 16px; } .search-container { display: none; } nav { gap: 16px; } nav a { font-size: 14px; } .carousel { height: 280px; border-radius: 16px; } .carousel-slide { padding: 28px; } .carousel-title { font-size: 22px; } .carousel-desc { font-size: 14px; } .article-card { grid-template-columns: 1fr; height: auto; } .article-image { min-height: 220px; } .main-grid { gap: 28px; } .sidebar-section:first-child { height: auto; } .lang-switch { display: none; } }
     </style>
 </head>
 <body>
@@ -187,10 +190,13 @@ function getCategoryGradient(category: string): string {
                 </div>
             </div>
             <nav>
-                <a href="/">Home</a>
-                <a href="/blog">News</a>
-                <a href="/about">About</a>
+                <a href="/en/">Home</a>
+                <a href="/en/blog">News</a>
+                <a href="/en/about">About</a>
             </nav>
+            <div class="lang-switch">
+                <a href="/" class="lang-btn" title="中文">中</a>
+            </div>
         </div>
         <CategoryNav />
         <SourceNav />
