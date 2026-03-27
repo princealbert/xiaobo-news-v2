@@ -96,5 +96,5 @@ export async function getAllArticleIds(): Promise<number[]> {
     return [];
   }
   
-  return (data || []).map(a => a.id);
+  return (data || []).slice(0, 200).map(a => a.id);
 }
