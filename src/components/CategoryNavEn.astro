@@ -1,12 +1,12 @@
 ---
-// 核心分类导航 - 纯文字分栏设计
+// 核心分类导航 - 英文版纯文字分栏设计
 const categories = [
-  { id: "all", name: "全部" },
-  { id: "人工智能", name: "人工智能" },
-  { id: "具身智能", name: "具身智能" },
-  { id: "财经", name: "财经" },
-  { id: "天津", name: "天津" },
-  { id: "创投", name: "创投" },
+  { id: "all", name: "All" },
+  { id: "人工智能", name: "AI" },
+  { id: "具身智能", name: "Embodied AI" },
+  { id: "财经", name: "Finance" },
+  { id: "天津", name: "Tianjin" },
+  { id: "创投", name: "Venture" },
 ];
 
 // 分类映射：核心分类 → RSS 原始分类
@@ -30,7 +30,6 @@ const categoryMapping: Record<string, string[]> = {
 </nav>
 
 <script>
-  // 分类映射
   const categoryMapping = {
     "人工智能": ["AI 前沿", "AI 技术", "大模型", "ChatGPT", "AGI", "AI 应用", "AI 创业"],
     "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],

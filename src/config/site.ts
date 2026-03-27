@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "晓波智能资讯站",
+  name: "晓波智能",
   description: "AI 前沿、科技产业、金融科技深度资讯",
   url: "https://xiaobo-news.com",
   ogImage: "/og.png",

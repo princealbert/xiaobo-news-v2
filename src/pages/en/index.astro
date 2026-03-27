@@ -1,7 +1,7 @@
 ---
 import { siteConfig } from '../../config/site';
-import CategoryNav from '../../components/CategoryNav.astro';
-import SourceNav from '../../components/SourceNav.astro';
+import CategoryNavEn from '../../components/CategoryNavEn.astro';
+import SourceNavEn from '../../components/SourceNavEn.astro';
 import { getFeaturedArticles } from '../../lib/supabase';
 
 export const revalidate = 3600;
@@ -78,7 +78,7 @@ function getCategoryGradient(category: string): string {
         .header-right { display: flex; align-items: center; gap: 28px; }
         .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; transition: transform 0.3s ease; }
         .logo:hover { transform: translateY(-2px); }
-        .logo-img { width: 52px; height: 52px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); transition: all 0.3s ease; background: white; padding: 4px; }
+        .logo-img { width: 52px; height: 52px; border-radius: 14px; box-shadow: none; transition: all 0.3s ease; background: transparent; padding: 0; }
         .logo:hover .logo-img { box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4); transform: scale(1.05); }
         .logo-text { font-size: 26px; font-weight: 900; background: linear-gradient(135deg, #0077b6 0%, #00b4d8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.5px; }
         .search-container { max-width: 560px; }
@@ -201,8 +201,8 @@ function getCategoryGradient(category: string): string {
                 </div>
             </div>
         </div>
-        <CategoryNav />
-        <SourceNav />
+        <CategoryNavEn />
+        <SourceNavEn />
     </header>
 
     <main>
@@ -268,17 +268,6 @@ function getCategoryGradient(category: string): string {
             </div>
 
             <aside class="sidebar">
-                <div class="sidebar-section">
-                    <div class="sidebar-title"><i class="fas fa-tags"></i> Categories</div>
-                    <div class="tag-cloud">
-                        <span class="tag">🤖 AI</span>
-                        <span class="tag">💻 Tech</span>
-                        <span class="tag">💰 FinTech</span>
-                        <span class="tag">📈 Trading</span>
-                        <span class="tag">🌍 Business</span>
-                        <span class="tag">🔬 Innovation</span>
-                    </div>
-                </div>
                 <div class="sidebar-section">
                     <div class="sidebar-title"><i class="fas fa-ad"></i> Advertising</div>
                     <div class="ad-slot"><i class="fas fa-bullhorn"></i><p><strong>广告位招租</strong></p><small>精准流量 · 高转化</small></div>
