@@ -62,8 +62,7 @@ function getCategoryGradient(category: string): string {
         .glass { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px) saturate(180%); box-shadow: 0 8px 32px rgba(0, 119, 182, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); }
         header { position: sticky; top: 0; z-index: 100; padding: 20px 0; transition: all 0.3s ease; }
         header.scrolled { padding: 12px 0; background: rgba(255, 255, 255, 0.98); box-shadow: 0 4px 20px rgba(0, 119, 182, 0.12); }
-        .header-content { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-        .header-left { display: flex; align-items: center; gap: 24px; flex: 1; }
+        .header-content { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: auto 1fr auto; gap: 32px; align-items: center; }
         .header-right { display: flex; align-items: center; gap: 28px; }
         nav { display: flex; align-items: center; gap: 28px; }
         nav a { color: #2d3748; text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.3s ease; position: relative; }
@@ -183,14 +182,22 @@ function getCategoryGradient(category: string): string {
                 <img src="/logo.png" alt="Logo" class="logo-img" />
                 <span class="logo-text">{siteConfig.name}</span>
             </a>
-            <!-- 移动端汉堡菜单按钮 -->
-            <button id="mobileMenuBtn" style="display:none;font-size:24px;cursor:pointer;background:none;border:none;">☰</button>
-            <MobileMenu />
-            <nav>
-                <a href="/">首页</a>
-                <a href="/blog">资讯</a>
-                <a href="/about">关于</a>
-            </nav>
+            <div class="search-container">
+                <div style="position: relative;">
+                    <input type="text" class="search-input" placeholder="搜索 AI、科技、金融资讯..." />
+                    <i class="fas fa-search" style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 18px;"></i>
+                </div>
+            </div>
+            <div class="header-right">
+                <nav>
+                    <a href="/">首页</a>
+                    <a href="/blog">资讯</a>
+                    <a href="/about">关于</a>
+                </nav>
+                <div class="lang-switch">
+                    <a href="/en/" class="lang-btn" title="English">EN</a>
+                </div>
+            </div>
         </div>
     <CategoryNav />
     <SourceNav />
