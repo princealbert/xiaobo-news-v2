@@ -2,6 +2,7 @@
 import { siteConfig } from '../config/site';
 import MobileMenu from '../components/MobileMenu.astro';
 import CategoryNav from '../components/CategoryNav.astro';
+import SourceNav from '../components/SourceNav.astro';
 import { getFeaturedArticles } from '../lib/supabase';
 
 export const revalidate = 60;
@@ -189,6 +190,7 @@ function getCategoryGradient(category: string): string {
             </nav>
         </div>
     <CategoryNav />
+    <SourceNav />
     </header>
 
     <main>

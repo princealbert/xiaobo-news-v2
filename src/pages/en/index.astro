@@ -1,5 +1,7 @@
 ---
 import { siteConfig } from '../../config/site';
+import CategoryNav from '../../components/CategoryNav.astro';
+import SourceNav from '../../components/SourceNav.astro';
 import { getFeaturedArticles } from '../../lib/supabase';
 
 export const revalidate = 3600;
@@ -190,6 +192,8 @@ function getCategoryGradient(category: string): string {
                 <a href="/about">About</a>
             </nav>
         </div>
+        <CategoryNav />
+        <SourceNav />
     </header>
 
     <main>
