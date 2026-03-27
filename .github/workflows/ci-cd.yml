@@ -38,24 +38,6 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
-      
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
-      
-      - name: Deployment Success
+      - name: Trigger Vercel Deploy
         run: |
-          echo "✅ 部署成功！"
-          echo "🌐 访问地址：https://xiaobo-news-v2.vercel.app"
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
