@@ -528,7 +528,7 @@ function getCategoryGradient(category: string): string {
             }
         }
         
-        console.log('🔄 自动刷新已启动 (每 5 分钟)');
+        console.log('🔄 Auto refresh started (every 5 minutes)');
         setInterval(fetchLatestArticles, REFRESH_INTERVAL);
         
         document.addEventListener('visibilitychange', () => {
@@ -536,6 +536,98 @@ function getCategoryGradient(category: string): string {
                 fetchLatestArticles();
             }
         });
+        
+        // Category navigation
+        const categoryMapping = {
+            "人工智能": ["AI 前沿", "AI 技术", "技术开发", "技术热点", "开发工具", "效率工具", "新产品"],
+            "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],
+            "财经": ["财经科技", "金融科技", "财经新闻", "投资分析"],
+            "天津": ["天津", "天津新闻", "滨海新区", "天开园", "政情"],
+            "创投": ["创投科技", "创业投资"],
+        };
+        
+        function initCategoryNav() {
+            const buttons = document.querySelectorAll('.category-link');
+            const articles = document.querySelectorAll('.article-card, .carousel-slide');
+            
+            if (buttons.length === 0) return;
+            
+            // Default select "All"
+            const allBtn = document.querySelector('.category-link[data-category="all"]');
+            if (allBtn) allBtn.classList.add('active');
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update button state
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const category = btn.getAttribute('data-category');
+                    if (!category) return;
+                    
+                    // Filter articles
+                    articles.forEach(article => {
+                        const articleCategory = article.getAttribute('data-category') || '';
+                        
+                        let visible = category === 'all';
+                        
+                        if (!visible && categoryMapping[category]) {
+                            visible = categoryMapping[category].some(cat => 
+                                articleCategory.includes(cat)
+                            );
+                        }
+                        
+                        if (visible) {
+                            article.style.display = '';
+                        } else {
+                            article.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Source navigation
+        function initSourceNav() {
+            const buttons = document.querySelectorAll('.source-link');
+            const articles = document.querySelectorAll('.article-card');
+            
+            if (buttons.length === 0) return;
+            
+            // Default select "All"
+            const allBtn = document.querySelector('.source-link[data-source="all"]');
+            if (allBtn) allBtn.classList.add('active');
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update button state
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const source = btn.getAttribute('data-source');
+                    if (!source) return;
+                    
+                    // Filter articles
+                    articles.forEach(article => {
+                        const articleSource = article.getAttribute('data-source') || '';
+                        
+                        const visible = source === 'all' || 
+                                       articleSource === source || 
+                                       articleSource.includes(source);
+                        
+                        if (visible) {
+                            article.style.display = '';
+                        } else {
+                            article.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Initialize navigation
+        initCategoryNav();
+        initSourceNav();
     </script>
 </body>
 </html>
