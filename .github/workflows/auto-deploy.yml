@@ -1,7 +1,7 @@
 name: Auto Deploy on Content Update
 
 on:
-  # 监控内容更新（Supabase 同步后触发）
+  # 囑控内容更新（Supabase 同步后触发）
   workflow_run:
     workflows: ["Auto Sync Articles"]
     types:
@@ -28,7 +28,9 @@ jobs:
             -H "apikey: ${{ env.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ env.SUPABASE_ANON_KEY }}")
           
-          COUNT=$(echo $RESPONSE | jq '.[0].count // 0')
+          # Supabase count returns {"count": N} or [{"count": N}] depending on query
+          # Handle both formats
+          COUNT=$(echo $RESPONSE | jq 'if type == "array" then .[0].count // 0 elif type == "object" then .count // 0 else 0 end')
           
           if [ "$COUNT" -gt "0" ]; then
             echo "has_updates=true" >> $GITHUB_OUTPUT
