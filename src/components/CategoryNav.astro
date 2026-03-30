@@ -10,7 +10,7 @@ const categories = [
 ];
 
 // 分类映射：核心分类 → RSS 原始分类
-const categoryMapping: Record<string, string[]> = {
+const categoryMapping = {
   "人工智能": ["AI 前沿", "AI 技术", "技术开发", "技术热点", "开发工具", "效率工具", "新产品"],
   "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],
   "财经": ["财经科技", "金融科技", "财经新闻", "投资分析"],
@@ -31,7 +31,7 @@ const categoryMapping: Record<string, string[]> = {
 
 <script>
   // 分类映射
-  const categoryMapping: Record<string, string[]> = {
+  const categoryMapping = {
     "人工智能": ["AI 前沿", "AI 技术", "技术开发", "技术热点", "开发工具", "效率工具", "新产品"],
     "具身智能": ["具身智能", "机器人", "自动驾驶", "智能硬件"],
     "财经": ["财经科技", "金融科技", "财经新闻", "投资分析"],
@@ -71,9 +71,9 @@ const categoryMapping: Record<string, string[]> = {
           }
           
           if (visible) {
-            (article as HTMLElement).style.display = '';
+            article.style.display = '';
           } else {
-            (article as HTMLElement).style.display = 'none';
+            article.style.display = 'none';
           }
         });
       });

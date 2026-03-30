@@ -62,9 +62,9 @@ const sources = [
                          articleSource.includes(source);
           
           if (visible) {
-            (article as HTMLElement).style.display = '';
+            article.style.display = '';
           } else {
-            (article as HTMLElement).style.display = 'none';
+            article.style.display = 'none';
           }
         });
       });

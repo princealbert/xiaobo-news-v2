@@ -3,13 +3,31 @@
   "sessions": {
     "5c42b80d05e747a49909e1553f52fbbf": [
       {
+        "expertId": "WorkflowOptimizationExpert",
+        "name": "Nova",
+        "profession": "工作流优化专家",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert_zh.md",
+        "usedAt": 1774619466235,
+        "industryId": "08-QualityAssurance"
+      },
+      {
         "expertId": "FrontendDeveloper",
         "name": "Paul",
         "profession": "前端开发工程师",
         "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/02-Engineering/FrontendDeveloper/FrontendDeveloper.png",
         "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/02-Engineering/FrontendDeveloper/FrontendDeveloper_zh.md",
-        "usedAt": 1774437954739,
+        "usedAt": 1774616922345,
         "industryId": "02-Engineering"
+      },
+      {
+        "expertId": "StudioOperationsManager",
+        "name": "Ellie",
+        "profession": "工作室运营管理者",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/07-ProjectManagement/StudioOperationsManager/StudioOperationsManager.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/07-ProjectManagement/StudioOperationsManager/StudioOperationsManager_zh.md",
+        "usedAt": 1774614748037,
+        "industryId": "07-ProjectManagement"
       }
     ],
     "9c375cf197dd40cea9d8802e68a894a7": [
@@ -22,7 +40,29 @@
         "usedAt": 1774443728734,
         "industryId": "01-Design"
       }
+    ],
+    "ff271725752b47e6b4f85269c3c1a4f7": [
+      {
+        "expertId": "DevOpsAutomationEngineer",
+        "name": "Noah",
+        "profession": "DevOps自动化工程师",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/02-Engineering/DevOpsAutomationEngineer/DevOpsAutomationEngineer.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/02-Engineering/DevOpsAutomationEngineer/DevOpsAutomationEngineer_zh.md",
+        "usedAt": 1774619778872,
+        "industryId": "02-Engineering"
+      }
+    ],
+    "95a921a51e194bfb832ed1af67cabc3a": [
+      {
+        "expertId": "FrontendDeveloper",
+        "name": "Paul",
+        "profession": "前端开发工程师",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/02-Engineering/FrontendDeveloper/FrontendDeveloper.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/02-Engineering/FrontendDeveloper/FrontendDeveloper_zh.md",
+        "usedAt": 1774885431446,
+        "industryId": "all"
+      }
     ]
   },
-  "lastUpdated": 1774482475129
+  "lastUpdated": 1774886304059
 }

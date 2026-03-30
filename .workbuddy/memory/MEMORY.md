@@ -77,7 +77,13 @@
 
 - [ ] 执行数据库迁移（添加 title_en/summary_en 字段）
 - [ ] 运行批量翻译脚本填充英文内容
-- [ ] 更新英文版详情页优先使用 title_en/summary_en
-- [ ] GitHub Secrets 配置（SUPABASE_URL, SUPABASE_ANON_KEY）
-- [ ] 验证部署流程（环境变量注入是否正常）
-- [ ] 引入衬线字体用于标题（可选，进一步提升设计感）
+- [ ] 更新英文版详情页优先使用 title_en/summary_en）
+- [x] GitHub Secrets 配置（SUPABASE_URL, SUPABASE_ANON_KEY）✅ 2026-03-27
+- [x] 验证部署流程（环境变量注入是否正常）✅ 2026-03-27 - CI/CD Secret 名称已统一修复
+
+## CI/CD 修复记录 (2026-03-27)
+
+### 修复内容
+- 统一 Secret 名称：`SUPABASE_KEY` → `SUPABASE_ANON_KEY`
+- 修复 Vercel Deploy Hook URL 格式
+- 涉及文件：ci-cd.yml, auto-sync.yml, auto-deploy.yml
