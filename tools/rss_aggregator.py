@@ -624,6 +624,17 @@ class RSSAggregator:
         for source in sources:
             print(f"\n📰 抓取：{source['name']} ({source['url']})")
             
+            # 处理 Crawler 类型源（如 GitHub Trending）
+            if source.get('type') == 'crawler':
+                articles = self._fetch_crawler(source)
+                if not articles:
+                    self.stats['errors'] += 1
+                    continue
+                self.stats['fetched_articles'] += len(articles)
+                for article in articles:
+                    self._process_article(article)
+                continue
+            
             feed = RSSFetcher.fetch_feed(source['url'])
             if not feed:
                 self.stats['errors'] += 1
@@ -640,6 +651,61 @@ class RSSAggregator:
         self._print_stats()
         
         self.db.close()
+    
+    def _fetch_crawler(self, source: Dict) -> List[Dict]:
+        """处理爬虫类型的数据源"""
+        url = source.get('url', '')
+        
+        # GitHub Trending
+        if 'github.com/trending' in url:
+            try:
+                # 动态导入避免循环依赖
+                import sys
+                sys.path.insert(0, str(WORKSPACE / 'tools'))
+                from github_trending import fetch_trending
+                
+                # 从 URL 提取语言参数
+                language = ''
+                if 'l=python' in url:
+                    language = 'Python'
+                elif 'l=javascript' in url:
+                    language = 'JavaScript'
+                elif 'l=typescript' in url:
+                    language = 'TypeScript'
+                elif 'l=go' in url:
+                    language = 'Go'
+                elif 'l=rust' in url:
+                    language = 'Rust'
+                
+                projects = fetch_trending(language=language if language else '')
+                
+                # 转换为统一格式
+                articles = []
+                for p in projects:
+                    articles.append({
+                        'title': p['title'],
+                        'link': p['url'],
+                        'summary': p['description'],
+                        'content': p['description'],
+                        'author': '',
+                        'source': source['name'],
+                        'category': source.get('category', '开源'),
+                        'language': 'en',
+                        'image_url': '',
+                        'published_at': p['published_at'],
+                        'tags': p.get('tags', []),
+                        'stars_today': p.get('stars_today', 0),
+                    })
+                
+                print(f"   ✅ GitHub Trending: {len(articles)} 个项目")
+                return articles
+                
+            except Exception as e:
+                print(f"   ❌ GitHub Trending 抓取失败: {e}")
+                return []
+        
+        print(f"   ⚠️ 未知爬虫类型: {url}")
+        return []
     
     def _process_article(self, article: Dict):
         """处理单篇文章"""
