@@ -24,9 +24,9 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
           # 检查过去 24 小时是否有新文章
-          RESPONSE=$(curl -s "${{ env.SUPABASE_URL }}/rest/v1/articles?select=count&publish_date=gt.$(date -d '24 hours ago' -Iseconds)" \
-            -H "apikey: ${{ env.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ env.SUPABASE_ANON_KEY }}")
+          RESPONSE=$(curl -s "$SUPABASE_URL/rest/v1/articles?select=count&publish_date=gt.$(date -d '24 hours ago' -Iseconds)" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY")
           
           # Supabase count returns {"count": N} or [{"count": N}] depending on query
           # Handle both formats

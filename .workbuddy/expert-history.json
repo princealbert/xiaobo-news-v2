@@ -54,6 +54,15 @@
     ],
     "95a921a51e194bfb832ed1af67cabc3a": [
       {
+        "expertId": "UiDesigner",
+        "name": "Sam",
+        "profession": "UI设计师",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/01-Design/UiDesigner/UiDesigner.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/01-Design/UiDesigner/UiDesigner_zh.md",
+        "usedAt": 1774886650907,
+        "industryId": "01-Design"
+      },
+      {
         "expertId": "FrontendDeveloper",
         "name": "Paul",
         "profession": "前端开发工程师",
@@ -64,5 +73,5 @@
       }
     ]
   },
-  "lastUpdated": 1774886304059
+  "lastUpdated": 1774886692230
 }
