@@ -35,11 +35,22 @@ import time
 load_dotenv()
 
 # ==================== 配置 ====================
-WORKSPACE = Path("/Users/albert/documents/茉莉空间")
-DB_PATH = WORKSPACE / "xiaobo-news-v2" / "news.db"
+# 跨平台路径配置 (支持本地 Mac + GitHub CI)
+if os.getenv('GITHUB_WORKSPACE'):
+    # GitHub Actions 环境
+    WORKSPACE = Path(os.getenv('GITHUB_WORKSPACE'))
+elif os.getenv('WORKDIR'):
+    WORKSPACE = Path(os.getenv('WORKDIR'))
+else:
+    # 本地 Mac 环境
+    WORKSPACE = Path("/Users/albert/documents/茉莉空间")
+
+DB_PATH = WORKSPACE / "news.db"
 RSS_CONFIG = WORKSPACE / "rss_sources_config.json"
 KEYWORDS_CONFIG = WORKSPACE / "config" / "keywords.json"
 ASSETS_DIR = WORKSPACE / "assets" / "news_images"
+
+# 确保必要的目录存在
 ASSETS_DIR.mkdir(parents=True, exist_ok=True)
 
 # 评分配置
